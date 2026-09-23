@@ -271,3 +271,147 @@ h1, h2, h3, h4, .font-display {
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
 }
+
+/* ==========================================================================
+   Responsive Form & Component Layouts
+   ========================================================================== */
+
+.form-panel {
+  padding: 2rem 2.2rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.division-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 0.35rem;
+  box-sizing: border-box;
+}
+
+.division-option {
+  cursor: pointer;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.talent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.talent-card {
+  cursor: pointer;
+  padding: 1.1rem 0.75rem;
+  border-radius: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.whatsapp-bottom-card {
+  padding: 2rem 1.8rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(37, 211, 102, 0.12) 0%, rgba(18, 140, 126, 0.12) 100%);
+  border: 1.5px solid rgba(37, 211, 102, 0.38);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 25px rgba(37, 211, 102, 0.12);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .form-panel {
+    padding: 1.25rem 1rem !important;
+    border-radius: 16px !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .division-grid {
+    gap: 0.5rem !important;
+  }
+
+  .division-option {
+    padding: 0.75rem 0.65rem !important;
+  }
+
+  .division-option span {
+    font-size: 0.92rem !important;
+  }
+
+  .talent-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.55rem !important;
+  }
+
+  .talent-card {
+    padding: 0.9rem 0.5rem !important;
+  }
+
+  .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  .form-actions button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .whatsapp-bottom-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    text-align: center !important;
+    padding: 1.4rem 1.1rem !important;
+  }
+
+  .whatsapp-bottom-card-content {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .whatsapp-bottom-card a {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .division-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+

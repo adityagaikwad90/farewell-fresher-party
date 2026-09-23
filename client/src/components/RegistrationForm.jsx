@@ -242,7 +242,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
             </div>
 
             {/* Action Buttons */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', maxWidth: '420px', margin: '0 auto' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', maxWidth: '380px', margin: '0 auto' }}>
               <button
                 type="button"
                 onClick={() => onSubmitSuccess(savedPass)}
@@ -252,17 +252,6 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                 <Ticket size={18} />
                 <span>View Full Digital Pass</span>
               </button>
-
-              <a
-                href="https://chat.whatsapp.com/BtrQQGn4MrxEF0zioEeE67"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-whatsapp"
-                style={{ width: '100%', padding: '0.9rem', fontSize: '1rem', justifyContent: 'center', borderRadius: '12px' }}
-              >
-                <MessageCircle size={18} />
-                <span>Join Official WhatsApp Community</span>
-              </a>
 
               <button
                 type="button"
@@ -295,10 +284,8 @@ export default function RegistrationForm({ onSubmitSuccess }) {
         
         {/* Form Header Card */}
         <div
-          className="glass-panel"
+          className="glass-panel form-panel"
           style={{
-            padding: '2rem 2.2rem',
-            marginBottom: '1.5rem',
             borderTop: '5px solid #a855f7',
           }}
         >
@@ -308,7 +295,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                 MCA First Year Student Registration
               </h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                Fill in the details below to confirm your spot in the gala event.
+                Fill in the details below to confirm your spot in the celebration event.
               </p>
             </div>
             <div style={{ fontSize: '0.8rem', color: '#f43f5e', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
@@ -367,7 +354,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
 
         <form onSubmit={handleSubmit}>
           {/* Section 1: Basic Information */}
-          <div className="glass-panel" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
+          <div className="glass-panel form-panel">
             <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#e2e8f0' }}>
               <User size={18} color="#a855f7" /> Student Identity
             </h3>
@@ -431,40 +418,35 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                 <span>DIVISION (DIV)</span>
                 <span className="required-star">*</span>
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginTop: '0.35rem' }}>
+              <div className="division-grid">
                 {['A', 'B'].map((division) => (
                   <div
                     key={division}
                     onClick={() => handleChange('div', division)}
+                    className="division-option"
                     style={{
-                      cursor: 'pointer',
-                      padding: '1.1rem',
-                      borderRadius: '14px',
                       background: formData.div === division ? 'rgba(168, 85, 247, 0.25)' : 'rgba(13, 16, 38, 0.65)',
                       border: formData.div === division ? '2px solid #a855f7' : '1px solid rgba(255, 255, 255, 0.1)',
                       boxShadow: formData.div === division ? '0 0 15px rgba(168, 85, 247, 0.35)' : 'none',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      transition: 'all 0.2s ease',
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', minWidth: 0, overflow: 'hidden' }}>
                       <div
                         style={{
-                          width: '20px',
-                          height: '20px',
+                          width: '18px',
+                          height: '18px',
                           borderRadius: '50%',
-                          border: formData.div === division ? '6px solid #c084fc' : '2px solid rgba(255, 255, 255, 0.3)',
+                          border: formData.div === division ? '5px solid #c084fc' : '2px solid rgba(255, 255, 255, 0.3)',
                           backgroundColor: '#0a0b16',
+                          flexShrink: 0,
                           transition: 'all 0.2s ease',
                         }}
                       />
-                      <span style={{ fontWeight: 700, fontSize: '1.05rem', color: formData.div === division ? '#ffffff' : '#cbd5e1' }}>
+                      <span style={{ fontWeight: 700, fontSize: '0.98rem', color: formData.div === division ? '#ffffff' : '#cbd5e1', whiteSpace: 'nowrap' }}>
                         Division {division}
                       </span>
                     </div>
-                    <GraduationCap size={20} color={formData.div === division ? '#c084fc' : '#64748b'} />
+                    <GraduationCap size={18} color={formData.div === division ? '#c084fc' : '#64748b'} style={{ flexShrink: 0 }} />
                   </div>
                 ))}
               </div>
@@ -473,7 +455,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
           </div>
 
           {/* Section 2: Talent & Event Registration */}
-          <div className="glass-panel" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
+          <div className="glass-panel form-panel">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
               <h3 style={{ fontSize: '1.15rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#e2e8f0' }}>
                 <Sparkles size={18} color="#ec4899" /> Talent &amp; Event Registration !!!
@@ -484,7 +466,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
               Want to take the spotlight on stage? Choose your performance category:
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.9rem', marginBottom: '1.25rem' }}>
+            <div className="talent-grid">
               {talents.map((item) => {
                 const IconComponent = item.icon;
                 const isSelected = formData.talent === item.id;
@@ -492,25 +474,17 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                   <div
                     key={item.id}
                     onClick={() => handleChange('talent', isSelected ? '' : item.id)}
+                    className="talent-card"
                     style={{
-                      cursor: 'pointer',
-                      padding: '1.1rem 0.9rem',
-                      borderRadius: '14px',
                       background: isSelected ? 'rgba(236, 72, 153, 0.22)' : 'rgba(13, 16, 38, 0.65)',
                       border: isSelected ? '2px solid #ec4899' : '1px solid rgba(255, 255, 255, 0.1)',
                       boxShadow: isSelected ? '0 0 16px rgba(236, 72, 153, 0.35)' : 'none',
-                      textAlign: 'center',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: '0.6rem',
-                      transition: 'all 0.2s ease',
                     }}
                   >
                     <div
                       style={{
-                        width: '44px',
-                        height: '44px',
+                        width: '42px',
+                        height: '42px',
                         borderRadius: '12px',
                         background: isSelected ? 'linear-gradient(135deg, #ec4899, #a855f7)' : 'rgba(255, 255, 255, 0.05)',
                         display: 'flex',
@@ -518,9 +492,9 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                         justifyContent: 'center',
                       }}
                     >
-                      <IconComponent size={22} color={isSelected ? '#ffffff' : item.color} />
+                      <IconComponent size={20} color={isSelected ? '#ffffff' : item.color} />
                     </div>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: isSelected ? '#ffffff' : '#cbd5e1' }}>
+                    <span style={{ fontSize: '0.88rem', fontWeight: 700, color: isSelected ? '#ffffff' : '#cbd5e1' }}>
                       {item.label}
                     </span>
                   </div>
@@ -557,7 +531,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
           </div>
 
           {/* Section 3: Party Vibes & Ideas */}
-          <div className="glass-panel" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
+          <div className="glass-panel form-panel">
             <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#e2e8f0' }}>
               <PartyPopper size={18} color="#f59e0b" /> Party Ideas &amp; Suggestions
             </h3>
@@ -591,64 +565,8 @@ export default function RegistrationForm({ onSubmitSuccess }) {
             </div>
           </div>
 
-          {/* Section 4: WhatsApp Group Notification Box */}
-          <div
-            className="glass-panel"
-            style={{
-              padding: '1.5rem 1.75rem',
-              marginBottom: '2rem',
-              background: 'linear-gradient(135deg, rgba(37, 211, 102, 0.1) 0%, rgba(18, 140, 126, 0.1) 100%)',
-              border: '1px solid rgba(37, 211, 102, 0.3)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '1rem',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  backgroundColor: '#25D366',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  boxShadow: '0 4px 15px rgba(37, 211, 102, 0.4)',
-                }}
-              >
-                <MessageCircle size={26} color="#ffffff" />
-              </div>
-              <div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', color: '#4ade80', letterSpacing: '0.06em' }}>
-                  DON'T MISS OUT
-                </div>
-                <div style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff' }}>
-                  JOIN OUR OFFICIAL WHATSAPP GROUP
-                </div>
-                <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
-                  Stay connected with organizers and receive instant updates!
-                </div>
-              </div>
-            </div>
-
-            <a
-              href="https://chat.whatsapp.com/BtrQQGn4MrxEF0zioEeE67"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-whatsapp"
-              style={{ padding: '0.75rem 1.25rem', fontSize: '0.9rem' }}
-            >
-              <MessageCircle size={18} />
-              <span>Join Official WhatsApp</span>
-            </a>
-          </div>
-
           {/* Action Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          <div className="form-actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
             <button
               type="submit"
               disabled={isSubmitting}

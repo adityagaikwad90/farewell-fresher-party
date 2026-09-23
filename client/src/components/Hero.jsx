@@ -33,28 +33,6 @@ export default function Hero({ onScrollToForm }) {
     <section style={{ padding: '3rem 1.5rem 2rem', position: 'relative', zIndex: 1 }}>
       <div style={{ maxWidth: '920px', margin: '0 auto', textAlign: 'center' }}>
         
-        {/* Celebration Pill */}
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.45rem 1.25rem',
-            borderRadius: '999px',
-            background: 'linear-gradient(90deg, rgba(168, 85, 247, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%)',
-            border: '1px solid rgba(168, 85, 247, 0.35)',
-            marginBottom: '1.5rem',
-            boxShadow: '0 0 25px rgba(168, 85, 247, 0.25)',
-          }}
-          className="animate-pulse-glow"
-        >
-          <Sparkles size={16} color="#c084fc" />
-          <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#e9d5ff', letterSpacing: '0.06em' }}>
-            GRAND ANNUAL GALA • 2026 EDITION
-          </span>
-          <Sparkles size={16} color="#ec4899" />
-        </div>
-
         {/* Main Title */}
         <h1
           style={{
@@ -174,20 +152,12 @@ export default function Hero({ onScrollToForm }) {
           </div>
         </div>
 
-        {/* Entry Fee & WhatsApp Information Cards */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '1.25rem',
-            margin: '1.5rem 0 2.5rem',
-          }}
-        >
-          {/* Fee Card */}
+        {/* Entry Fee Information Card */}
+        <div style={{ maxWidth: '440px', margin: '1.5rem auto 2.2rem' }}>
           <div
             className="glass-panel"
             style={{
-              padding: '1.35rem 1.5rem',
+              padding: '1.25rem 1.4rem',
               display: 'flex',
               alignItems: 'center',
               gap: '1.1rem',
@@ -198,8 +168,8 @@ export default function Hero({ onScrollToForm }) {
           >
             <div
               style={{
-                width: '48px',
-                height: '48px',
+                width: '46px',
+                height: '46px',
                 borderRadius: '12px',
                 background: 'rgba(245, 158, 11, 0.15)',
                 display: 'flex',
@@ -208,7 +178,7 @@ export default function Hero({ onScrollToForm }) {
                 flexShrink: 0,
               }}
             >
-              <IndianRupee size={26} color="#fbbf24" />
+              <IndianRupee size={24} color="#fbbf24" />
             </div>
             <div>
               <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#fbbf24', letterSpacing: '0.06em' }}>
@@ -218,61 +188,9 @@ export default function Hero({ onScrollToForm }) {
                 ₹500 - ₹700
               </div>
               <div style={{ fontSize: '0.76rem', color: '#94a3b8' }}>
-                *According to the strength of people, fee may vary.
+                *According to the strength of attendees, fee may vary.
               </div>
             </div>
-          </div>
-
-          {/* WhatsApp Direct Group Card */}
-          <div
-            className="glass-panel"
-            style={{
-              padding: '1.35rem 1.5rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '1rem',
-              borderLeft: '4px solid #25D366',
-              textAlign: 'left',
-              background: 'rgba(20, 24, 52, 0.75)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
-              <div
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  background: 'rgba(37, 211, 102, 0.15)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}
-              >
-                <MessageCircle size={26} color="#25D366" />
-              </div>
-              <div>
-                <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#4ade80', letterSpacing: '0.06em' }}>
-                  Official Community
-                </div>
-                <div style={{ fontSize: '1rem', fontWeight: 800, color: '#ffffff' }}>
-                  Official WhatsApp Group
-                </div>
-                <div style={{ fontSize: '0.76rem', color: '#94a3b8' }}>
-                  Get party updates &amp; schedules
-                </div>
-              </div>
-            </div>
-            <a
-              href="https://chat.whatsapp.com/BtrQQGn4MrxEF0zioEeE67"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-whatsapp"
-              style={{ padding: '0.6rem 1rem', fontSize: '0.85rem', flexShrink: 0 }}
-            >
-              Join Group
-            </a>
           </div>
         </div>
 

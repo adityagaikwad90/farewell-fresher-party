@@ -63,6 +63,59 @@ export default function App() {
           <>
             <Hero onScrollToForm={handleScrollToForm} />
             <RegistrationForm onSubmitSuccess={handleSuccess} />
+
+            {/* Official WhatsApp Community - Single Prominent Placement at Bottom */}
+            <section style={{ padding: '0 1.5rem 4rem', position: 'relative', zIndex: 1 }}>
+              <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+                <div className="glass-panel whatsapp-bottom-card">
+                  <div className="whatsapp-bottom-card-content" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flex: 1, minWidth: '260px' }}>
+                    <div
+                      style={{
+                        width: '56px',
+                        height: '56px',
+                        borderRadius: '16px',
+                        background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        boxShadow: '0 6px 20px rgba(37, 211, 102, 0.45)',
+                      }}
+                      className="animate-pulse-glow"
+                    >
+                      <MessageCircle size={32} color="#ffffff" />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', color: '#4ade80', letterSpacing: '0.06em', marginBottom: '0.2rem' }}>
+                        Official Community
+                      </div>
+                      <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff', marginBottom: '0.25rem' }}>
+                        Join Official WhatsApp Community
+                      </h3>
+                      <p style={{ fontSize: '0.88rem', color: '#cbd5e1', lineHeight: 1.45 }}>
+                        Get instant announcements on event venue, party timings, theme dress code, and performance schedule!
+                      </p>
+                    </div>
+                  </div>
+
+                  <a
+                    href="https://chat.whatsapp.com/BtrQQGn4MrxEF0zioEeE67"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-whatsapp"
+                    style={{
+                      padding: '0.85rem 1.6rem',
+                      fontSize: '1rem',
+                      borderRadius: '12px',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <MessageCircle size={20} />
+                    <span>Join Official WhatsApp</span>
+                  </a>
+                </div>
+              </div>
+            </section>
           </>
         ) : (
           <AdminPanel onBackToForm={navigateToRegister} />
@@ -78,7 +131,7 @@ export default function App() {
         />
       )}
 
-      {/* Clean Footer (No admin links exposed) */}
+      {/* Clean Footer (Single branding, no duplicate links) */}
       <footer
         style={{
           borderTop: '1px solid rgba(255, 255, 255, 0.08)',
@@ -97,20 +150,9 @@ export default function App() {
             </span>
           </div>
 
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.86rem', marginBottom: '1.25rem' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.86rem', margin: 0 }}>
             Organized with <Heart size={14} color="#ec4899" style={{ display: 'inline', verticalAlign: 'middle' }} /> by MCA 2nd Year Students for our juniors and outgoing seniors.
           </p>
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
-            <a
-              href="https://chat.whatsapp.com/BtrQQGn4MrxEF0zioEeE67"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: '#4ade80', textDecoration: 'none', fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}
-            >
-              <MessageCircle size={16} /> Join Official WhatsApp Group
-            </a>
-          </div>
         </div>
       </footer>
     </div>

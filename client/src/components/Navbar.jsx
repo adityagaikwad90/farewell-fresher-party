@@ -1,5 +1,5 @@
 import React from 'react';
-import { GraduationCap, Sparkles, MessageCircle } from 'lucide-react';
+import { GraduationCap, Sparkles } from 'lucide-react';
 
 export default function Navbar({ onLogoClick }) {
   return (
@@ -63,24 +63,6 @@ export default function Navbar({ onLogoClick }) {
               Two Batches • One Celebration
             </p>
           </div>
-        </div>
-
-        {/* Right Action: WhatsApp CTA only */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-          <a
-            href="https://chat.whatsapp.com/BtrQQGn4MrxEF0zioEeE67"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-whatsapp"
-            style={{
-              padding: '0.6rem 1.1rem',
-              fontSize: '0.88rem',
-              borderRadius: '10px',
-            }}
-          >
-            <MessageCircle size={16} />
-            <span>Join WhatsApp Group</span>
-          </a>
         </div>
       </div>
     </header>

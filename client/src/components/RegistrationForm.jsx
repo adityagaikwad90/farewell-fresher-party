@@ -50,10 +50,10 @@ export default function RegistrationForm({ onSubmitSuccess }) {
   });
 
   const talents = [
-    { id: 'SINGING', label: 'Singing', icon: Mic, color: '#ec4899' },
-    { id: 'DANCING', label: 'Dancing', icon: Music, color: '#a855f7' },
+    { id: 'SINGING', label: 'Singing', icon: Mic, color: '#818cf8' },
+    { id: 'DANCING', label: 'Dancing', icon: Music, color: '#a5b4fc' },
     { id: 'STAND UP COMEDY', label: 'Stand Up Comedy', icon: Laugh, color: '#f59e0b' },
-    { id: 'Other', label: 'Other Talent', icon: Sparkles, color: '#06b6d4' }
+    { id: 'Other', label: 'Other Talent', icon: Sparkles, color: '#38bdf8' }
   ];
 
   const validate = () => {
@@ -216,7 +216,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1.25rem' }}>
                 <div>
                   <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>Pass ID</div>
-                  <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#a855f7', marginTop: '0.2rem' }}>
+                  <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#818cf8', marginTop: '0.2rem' }}>
                     {savedPass.regNumber || 'MCA26-CONFIRMED'}
                   </div>
                 </div>
@@ -228,7 +228,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                 </div>
                 <div>
                   <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>Talent Slot</div>
-                  <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#f472b6', marginTop: '0.2rem' }}>
+                  <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#c7d2fe', marginTop: '0.2rem' }}>
                     {savedPass.talent || 'None'}
                   </div>
                 </div>
@@ -286,7 +286,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
         <div
           className="glass-panel form-panel"
           style={{
-            borderTop: '5px solid #a855f7',
+            borderTop: '3px solid #6366f1',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
@@ -309,8 +309,8 @@ export default function RegistrationForm({ onSubmitSuccess }) {
             style={{
               padding: '1.2rem 1.4rem',
               borderRadius: '16px',
-              backgroundColor: conflictData ? 'rgba(245, 158, 11, 0.15)' : 'rgba(239, 68, 68, 0.15)',
-              border: `1.5px solid ${conflictData ? 'rgba(245, 158, 11, 0.5)' : 'rgba(239, 68, 68, 0.4)'}`,
+              backgroundColor: conflictData ? 'rgba(245, 158, 11, 0.12)' : 'rgba(239, 68, 68, 0.12)',
+              border: `1px solid ${conflictData ? 'rgba(245, 158, 11, 0.35)' : 'rgba(239, 68, 68, 0.35)'}`,
               color: conflictData ? '#fde68a' : '#fca5a5',
               marginBottom: '1.5rem',
               display: 'flex',
@@ -344,7 +344,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                   fontSize: '0.85rem',
                 }}
               >
-                <span>Existing Pass ID: <strong style={{ color: '#a855f7' }}>{conflictData.regNumber}</strong></span>
+                <span>Existing Pass ID: <strong style={{ color: '#818cf8' }}>{conflictData.regNumber}</strong></span>
                 <span>Attendee: <strong style={{ color: '#ffffff' }}>{conflictData.fullName}</strong></span>
                 <span>Division: <strong style={{ color: '#38bdf8' }}>{conflictData.div}</strong></span>
               </div>
@@ -356,7 +356,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
           {/* Section 1: Basic Information */}
           <div className="glass-panel form-panel">
             <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#e2e8f0' }}>
-              <User size={18} color="#a855f7" /> Student Identity
+              <User size={18} color="#818cf8" /> Student Identity
             </h3>
 
             {/* FULL NAME */}
@@ -425,9 +425,8 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                     onClick={() => handleChange('div', division)}
                     className="division-option"
                     style={{
-                      background: formData.div === division ? 'rgba(168, 85, 247, 0.25)' : 'rgba(13, 16, 38, 0.65)',
-                      border: formData.div === division ? '2px solid #a855f7' : '1px solid rgba(255, 255, 255, 0.1)',
-                      boxShadow: formData.div === division ? '0 0 15px rgba(168, 85, 247, 0.35)' : 'none',
+                      background: formData.div === division ? 'rgba(99, 102, 241, 0.12)' : 'rgba(15, 23, 42, 0.6)',
+                      border: formData.div === division ? '1.5px solid #6366f1' : '1px solid rgba(255, 255, 255, 0.08)',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', minWidth: 0, overflow: 'hidden' }}>
@@ -436,8 +435,8 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                           width: '18px',
                           height: '18px',
                           borderRadius: '50%',
-                          border: formData.div === division ? '5px solid #c084fc' : '2px solid rgba(255, 255, 255, 0.3)',
-                          backgroundColor: '#0a0b16',
+                          border: formData.div === division ? '5px solid #6366f1' : '2px solid rgba(255, 255, 255, 0.25)',
+                          backgroundColor: '#0b0f19',
                           flexShrink: 0,
                           transition: 'all 0.2s ease',
                         }}
@@ -446,7 +445,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                         Division {division}
                       </span>
                     </div>
-                    <GraduationCap size={18} color={formData.div === division ? '#c084fc' : '#64748b'} style={{ flexShrink: 0 }} />
+                    <GraduationCap size={18} color={formData.div === division ? '#818cf8' : '#64748b'} style={{ flexShrink: 0 }} />
                   </div>
                 ))}
               </div>
@@ -458,9 +457,9 @@ export default function RegistrationForm({ onSubmitSuccess }) {
           <div className="glass-panel form-panel">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
               <h3 style={{ fontSize: '1.15rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#e2e8f0' }}>
-                <Sparkles size={18} color="#ec4899" /> Talent &amp; Event Registration !!!
+                <Sparkles size={18} color="#818cf8" /> Talent &amp; Event Registration
               </h3>
-              <span className="badge badge-pink">Showcase Your Passion</span>
+              <span className="badge badge-purple">Optional Showcase</span>
             </div>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginBottom: '1.5rem' }}>
               Want to take the spotlight on stage? Choose your performance category:
@@ -476,9 +475,8 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                     onClick={() => handleChange('talent', isSelected ? '' : item.id)}
                     className="talent-card"
                     style={{
-                      background: isSelected ? 'rgba(236, 72, 153, 0.22)' : 'rgba(13, 16, 38, 0.65)',
-                      border: isSelected ? '2px solid #ec4899' : '1px solid rgba(255, 255, 255, 0.1)',
-                      boxShadow: isSelected ? '0 0 16px rgba(236, 72, 153, 0.35)' : 'none',
+                      background: isSelected ? 'rgba(99, 102, 241, 0.14)' : 'rgba(15, 23, 42, 0.6)',
+                      border: isSelected ? '1.5px solid #6366f1' : '1px solid rgba(255, 255, 255, 0.08)',
                     }}
                   >
                     <div
@@ -486,13 +484,13 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                         width: '42px',
                         height: '42px',
                         borderRadius: '12px',
-                        background: isSelected ? 'linear-gradient(135deg, #ec4899, #a855f7)' : 'rgba(255, 255, 255, 0.05)',
+                        background: isSelected ? 'rgba(99, 102, 241, 0.22)' : 'rgba(255, 255, 255, 0.04)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
                     >
-                      <IconComponent size={20} color={isSelected ? '#ffffff' : item.color} />
+                      <IconComponent size={20} color={isSelected ? '#c7d2fe' : item.color} />
                     </div>
                     <span style={{ fontSize: '0.88rem', fontWeight: 700, color: isSelected ? '#ffffff' : '#cbd5e1' }}>
                       {item.label}
@@ -508,8 +506,8 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                 style={{
                   padding: '1.25rem',
                   borderRadius: '12px',
-                  background: 'rgba(6, 182, 212, 0.08)',
-                  border: '1px dashed rgba(6, 182, 212, 0.35)',
+                  background: 'rgba(99, 102, 241, 0.05)',
+                  border: '1px dashed rgba(99, 102, 241, 0.3)',
                   marginTop: '0.75rem',
                 }}
               >
@@ -533,7 +531,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
           {/* Section 3: Party Vibes & Ideas */}
           <div className="glass-panel form-panel">
             <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#e2e8f0' }}>
-              <PartyPopper size={18} color="#f59e0b" /> Party Ideas &amp; Suggestions
+              <PartyPopper size={18} color="#818cf8" /> Party Ideas &amp; Suggestions
             </h3>
 
             {/* What would you like to see at the Fresher Party? */}

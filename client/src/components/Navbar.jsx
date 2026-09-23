@@ -10,7 +10,7 @@ export default function Navbar({ onLogoClick }) {
         zIndex: 50,
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        backgroundColor: 'rgba(10, 11, 22, 0.8)',
+        backgroundColor: 'rgba(11, 15, 25, 0.85)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
         padding: '0.9rem 1.5rem',
       }}
@@ -38,21 +38,21 @@ export default function Navbar({ onLogoClick }) {
         >
           <div
             style={{
-              width: '42px',
-              height: '42px',
+              width: '40px',
+              height: '40px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+              background: 'linear-gradient(135deg, #4f46e5 0%, #3730a3 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 15px rgba(168, 85, 247, 0.4)',
+              boxShadow: '0 2px 10px rgba(79, 70, 229, 0.3)',
             }}
           >
-            <GraduationCap size={24} color="#ffffff" />
+            <GraduationCap size={22} color="#ffffff" />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <span style={{ fontWeight: 800, fontSize: '1.1rem', letterSpacing: '-0.02em', color: '#ffffff' }}>
+              <span style={{ fontWeight: 800, fontSize: '1.05rem', letterSpacing: '-0.02em', color: '#ffffff' }}>
                 MCA FEST 2026
               </span>
               <span className="badge badge-purple" style={{ padding: '0.15rem 0.45rem', fontSize: '0.7rem' }}>

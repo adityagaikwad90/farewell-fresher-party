@@ -71,25 +71,24 @@ export default function App() {
                   <div className="whatsapp-bottom-card-content" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flex: 1, minWidth: '260px' }}>
                     <div
                       style={{
-                        width: '56px',
-                        height: '56px',
-                        borderRadius: '16px',
-                        background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
+                        width: '52px',
+                        height: '52px',
+                        borderRadius: '14px',
+                        background: '#16a34a',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0,
-                        boxShadow: '0 6px 20px rgba(37, 211, 102, 0.45)',
+                        boxShadow: '0 4px 14px rgba(22, 163, 74, 0.25)',
                       }}
-                      className="animate-pulse-glow"
                     >
-                      <MessageCircle size={32} color="#ffffff" />
+                      <MessageCircle size={28} color="#ffffff" />
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', color: '#4ade80', letterSpacing: '0.06em', marginBottom: '0.2rem' }}>
+                      <div style={{ fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', color: '#86efac', letterSpacing: '0.06em', marginBottom: '0.2rem' }}>
                         Official Community
                       </div>
-                      <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff', marginBottom: '0.25rem' }}>
+                      <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', marginBottom: '0.25rem' }}>
                         Join Official WhatsApp Community
                       </h3>
                       <p style={{ fontSize: '0.88rem', color: '#cbd5e1', lineHeight: 1.45 }}>
@@ -105,7 +104,7 @@ export default function App() {
                     className="btn btn-whatsapp"
                     style={{
                       padding: '0.85rem 1.6rem',
-                      fontSize: '1rem',
+                      fontSize: '0.98rem',
                       borderRadius: '12px',
                       flexShrink: 0,
                     }}
@@ -135,7 +134,7 @@ export default function App() {
       <footer
         style={{
           borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-          backgroundColor: 'rgba(10, 11, 22, 0.92)',
+          backgroundColor: 'rgba(11, 15, 25, 0.95)',
           padding: '2.5rem 1.5rem',
           textAlign: 'center',
           position: 'relative',
@@ -151,7 +150,7 @@ export default function App() {
           </div>
 
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.86rem', margin: 0 }}>
-            Organized with <Heart size={14} color="#ec4899" style={{ display: 'inline', verticalAlign: 'middle' }} /> by MCA 2nd Year Students for our juniors and outgoing seniors.
+            Organized with <Heart size={14} color="#f43f5e" style={{ display: 'inline', verticalAlign: 'middle' }} /> by MCA 2nd Year Students for our juniors and outgoing seniors.
           </p>
         </div>
       </footer>

@@ -22,11 +22,11 @@ export default function SuccessModal({ data, onClose, onRegisterAnother }) {
     fire(0.25, {
       spread: 30,
       startVelocity: 55,
-      colors: ['#a855f7', '#ec4899', '#f59e0b']
+      colors: ['#6366f1', '#818cf8', '#38bdf8']
     });
     fire(0.2, {
       spread: 60,
-      colors: ['#38bdf8', '#10b981', '#f43f5e']
+      colors: ['#38bdf8', '#10b981', '#cbd5e1']
     });
     fire(0.35, {
       spread: 100,
@@ -63,8 +63,8 @@ export default function SuccessModal({ data, onClose, onRegisterAnother }) {
           maxWidth: '520px',
           padding: '2.5rem 2rem',
           position: 'relative',
-          border: '1.5px solid rgba(168, 85, 247, 0.45)',
-          boxShadow: '0 25px 70px rgba(0, 0, 0, 0.7), 0 0 35px rgba(168, 85, 247, 0.25)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.7)',
           textAlign: 'center',
           borderRadius: '24px',
         }}
@@ -97,34 +97,34 @@ export default function SuccessModal({ data, onClose, onRegisterAnother }) {
         {/* Success Icon with Glowing Ripple */}
         <div
           style={{
-            width: '76px',
-            height: '76px',
+            width: '72px',
+            height: '72px',
             borderRadius: '50%',
             background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 1.5rem',
-            boxShadow: '0 0 30px rgba(16, 185, 129, 0.55)',
-            border: '4px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 0 24px rgba(16, 185, 129, 0.4)',
+            border: '3px solid rgba(255, 255, 255, 0.15)',
           }}
           className="animate-pulse-glow"
         >
-          <CheckCircle2 size={44} color="#ffffff" />
+          <CheckCircle2 size={40} color="#ffffff" />
         </div>
 
         {/* Headline */}
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.5rem' }}>
-          <Sparkles size={18} color="#fbbf24" />
-          <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#fbbf24', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+          <Sparkles size={16} color="#34d399" />
+          <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#34d399', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
             Submission Confirmed
           </span>
-          <Sparkles size={18} color="#fbbf24" />
+          <Sparkles size={16} color="#34d399" />
         </div>
 
         <h2
           style={{
-            fontSize: '1.9rem',
+            fontSize: '1.85rem',
             fontWeight: 800,
             color: '#ffffff',
             marginBottom: '0.75rem',
@@ -134,9 +134,9 @@ export default function SuccessModal({ data, onClose, onRegisterAnother }) {
           Registration Successful! 🎉
         </h2>
 
-        <p style={{ color: '#cbd5e1', fontSize: '1rem', lineHeight: 1.6, marginBottom: '1.5rem', padding: '0 0.5rem' }}>
+        <p style={{ color: '#cbd5e1', fontSize: '0.98rem', lineHeight: 1.6, marginBottom: '1.5rem', padding: '0 0.5rem' }}>
           Thank you, <strong style={{ color: '#f8fafc', fontWeight: 700 }}>{data?.fullName || 'Student'}</strong>!
-          Your registration for the <strong style={{ color: '#f472b6' }}>MCA Fresher &amp; Farewell Celebration 2026</strong> has been successfully recorded.
+          Your registration for the <strong style={{ color: '#c7d2fe' }}>MCA Fresher &amp; Farewell Celebration 2026</strong> has been successfully recorded.
         </p>
 
         {/* WhatsApp Group Box */}
@@ -144,8 +144,8 @@ export default function SuccessModal({ data, onClose, onRegisterAnother }) {
           style={{
             padding: '1.25rem',
             borderRadius: '16px',
-            background: 'linear-gradient(135deg, rgba(37, 211, 102, 0.14) 0%, rgba(18, 140, 126, 0.14) 100%)',
-            border: '1.5px solid rgba(37, 211, 102, 0.4)',
+            background: 'rgba(17, 24, 39, 0.75)',
+            border: '1px solid rgba(34, 197, 94, 0.3)',
             marginBottom: '1.5rem',
           }}
         >

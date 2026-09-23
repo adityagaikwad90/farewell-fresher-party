@@ -51,8 +51,8 @@ export default function Hero({ onScrollToForm }) {
         {/* Animated Countdown Timer */}
         <div style={{ margin: '1rem 0 2rem' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.85rem' }}>
-            <Clock size={15} color="#c084fc" />
-            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#e2e8f0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            <Clock size={15} color="#94a3b8" />
+            <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Countdown to Celebration • 1st – 2nd October 2026
             </span>
           </div>
@@ -80,8 +80,8 @@ export default function Hero({ onScrollToForm }) {
                 minWidth: '72px',
                 textAlign: 'center',
                 borderRadius: '12px',
-                border: '1px solid rgba(168, 85, 247, 0.25)',
-                background: 'rgba(20, 24, 52, 0.7)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                background: 'rgba(17, 24, 39, 0.65)',
               }}
             >
               <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff', fontFamily: 'var(--font-display)' }}>
@@ -103,9 +103,9 @@ export default function Hero({ onScrollToForm }) {
             textAlign: 'left',
             margin: '1rem 0 2rem',
             position: 'relative',
-            border: '1px solid rgba(168, 85, 247, 0.3)',
-            background: 'linear-gradient(180deg, rgba(25, 30, 68, 0.8) 0%, rgba(13, 16, 38, 0.9) 100%)',
-            boxShadow: '0 15px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(168, 85, 247, 0.15)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            background: 'rgba(17, 24, 39, 0.7)',
+            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
@@ -122,7 +122,7 @@ export default function Hero({ onScrollToForm }) {
             At the same time, we are also celebrating the journey, memories, friendships, and achievements of our <strong style={{ color: '#e2e8f0' }}>MCA 2nd Year outgoing students</strong> as they take their next step toward a new chapter. 🌟
           </p>
           <p style={{ color: '#cbd5e1', fontSize: '0.96rem', marginBottom: '1.25rem', lineHeight: 1.7 }}>
-            So, this year, we are bringing everyone together for one special celebration — <strong style={{ color: '#f472b6' }}>FRESHER + FAREWELL 2026! 🥳</strong>
+            So, this year, we are bringing everyone together for one special celebration — <strong style={{ color: '#c7d2fe' }}>FRESHER + FAREWELL 2026! 🥳</strong>
           </p>
           <p style={{ color: '#94a3b8', fontSize: '0.92rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
             This portal is specially created for MCA First Year students to collect your basic information and know your interests, preferences, and participation for the event. This is not just another college event. It is a chance to <strong style={{ color: '#f8fafc' }}>meet new people, celebrate friendships, appreciate our seniors</strong>, and create memories that we'll carry with us long after college. ❤️
@@ -131,24 +131,23 @@ export default function Hero({ onScrollToForm }) {
           {/* Slogan Banner */}
           <div
             style={{
-              padding: '1.1rem 1.25rem',
-              borderRadius: '14px',
-              background: 'linear-gradient(90deg, rgba(236, 72, 153, 0.18) 0%, rgba(168, 85, 247, 0.18) 100%)',
-              border: '1px solid rgba(236, 72, 153, 0.35)',
+              padding: '0.9rem 1.25rem',
+              borderRadius: '12px',
+              background: 'rgba(99, 102, 241, 0.08)',
+              border: '1px solid rgba(99, 102, 241, 0.2)',
               textAlign: 'center',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '0.6rem',
               flexWrap: 'wrap',
-              boxShadow: '0 4px 20px rgba(236, 72, 153, 0.15)',
             }}
           >
-            <Flame size={20} color="#f97316" />
-            <span style={{ fontWeight: 800, fontSize: '1rem', color: '#fef08a', letterSpacing: '0.02em' }}>
+            <Sparkles size={18} color="#818cf8" />
+            <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#e2e8f0', letterSpacing: '0.02em' }}>
               One Department. Two Batches. One Celebration. Countless Memories.
             </span>
-            <Flame size={20} color="#f97316" />
+            <Sparkles size={18} color="#818cf8" />
           </div>
         </div>
 
@@ -157,37 +156,37 @@ export default function Hero({ onScrollToForm }) {
           <div
             className="glass-panel"
             style={{
-              padding: '1.25rem 1.4rem',
+              padding: '1.15rem 1.3rem',
               display: 'flex',
               alignItems: 'center',
               gap: '1.1rem',
-              borderLeft: '4px solid #f59e0b',
+              borderLeft: '3px solid #6366f1',
               textAlign: 'left',
-              background: 'rgba(20, 24, 52, 0.75)',
+              background: 'rgba(17, 24, 39, 0.65)',
             }}
           >
             <div
               style={{
-                width: '46px',
-                height: '46px',
-                borderRadius: '12px',
-                background: 'rgba(245, 158, 11, 0.15)',
+                width: '44px',
+                height: '44px',
+                borderRadius: '10px',
+                background: 'rgba(99, 102, 241, 0.12)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
               }}
             >
-              <IndianRupee size={24} color="#fbbf24" />
+              <IndianRupee size={22} color="#a5b4fc" />
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#fbbf24', letterSpacing: '0.06em' }}>
+              <div style={{ fontSize: '0.74rem', fontWeight: 600, textTransform: 'uppercase', color: '#a5b4fc', letterSpacing: '0.06em' }}>
                 Estimated Entry Fee
               </div>
-              <div style={{ fontSize: '1.35rem', fontWeight: 900, color: '#ffffff' }}>
+              <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff' }}>
                 ₹500 - ₹700
               </div>
-              <div style={{ fontSize: '0.76rem', color: '#94a3b8' }}>
+              <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
                 *According to the strength of attendees, fee may vary.
               </div>
             </div>
@@ -197,12 +196,11 @@ export default function Hero({ onScrollToForm }) {
         {/* Scroll CTA button */}
         <button
           onClick={onScrollToForm}
-          className="btn btn-primary animate-float"
+          className="btn btn-primary"
           style={{
-            padding: '1rem 2.4rem',
-            fontSize: '1.05rem',
+            padding: '0.95rem 2.2rem',
+            fontSize: '1rem',
             borderRadius: '999px',
-            boxShadow: '0 8px 30px rgba(168, 85, 247, 0.45)',
           }}
         >
           <span>Fill Out Registration Form</span>

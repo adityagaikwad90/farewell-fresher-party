@@ -19,6 +19,7 @@ import {
   Ticket,
   Calendar
 } from 'lucide-react';
+import { API_BASE } from '../config';
 
 export default function RegistrationForm({ onSubmitSuccess }) {
   const initialFormData = {
@@ -121,7 +122,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
     setConflictData(null);
 
     try {
-      const response = await fetch('/api/register', {
+      const response = await fetch(`${API_BASE}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

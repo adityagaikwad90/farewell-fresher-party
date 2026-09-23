@@ -17,6 +17,7 @@ import {
   AlertTriangle,
   GraduationCap
 } from 'lucide-react';
+import { API_BASE } from '../config';
 
 export default function AdminPanel({ onBackToForm }) {
   const [passcode, setPasscode] = useState('');
@@ -46,7 +47,7 @@ export default function AdminPanel({ onBackToForm }) {
     setAuthError('');
     try {
       // Test login
-      const loginRes = await fetch('/api/admin/login', {
+      const loginRes = await fetch(`${API_BASE}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ passcode: tokenToUse })
@@ -73,7 +74,7 @@ export default function AdminPanel({ onBackToForm }) {
   };
 
   const loadResponses = async (token) => {
-    const res = await fetch('/api/responses', {
+    const res = await fetch(`${API_BASE}/api/responses`, {
       headers: { 'x-admin-passcode': token || passcode }
     });
     if (res.ok) {
@@ -83,7 +84,7 @@ export default function AdminPanel({ onBackToForm }) {
   };
 
   const loadStats = async (token) => {
-    const res = await fetch('/api/stats', {
+    const res = await fetch(`${API_BASE}/api/stats`, {
       headers: { 'x-admin-passcode': token || passcode }
     });
     if (res.ok) {
@@ -94,7 +95,7 @@ export default function AdminPanel({ onBackToForm }) {
 
   const loadHealth = async () => {
     try {
-      const res = await fetch('/api/health');
+      const res = await fetch(`${API_BASE}/api/health`);
       if (res.ok) {
         const json = await res.json();
         setDbInfo(json.database);
@@ -128,7 +129,7 @@ export default function AdminPanel({ onBackToForm }) {
       return;
     }
     try {
-      const res = await fetch(`/api/responses/${id}`, {
+      const res = await fetch(`${API_BASE}/api/responses/${id}`, {
         method: 'DELETE',
         headers: { 'x-admin-passcode': passcode }
       });
@@ -142,7 +143,7 @@ export default function AdminPanel({ onBackToForm }) {
   };
 
   const handleExportCsv = () => {
-    window.location.href = `/api/export?passcode=${encodeURIComponent(passcode)}`;
+    window.location.href = `${API_BASE}/api/export?passcode=${encodeURIComponent(passcode)}`;
   };
 
   // Filtered Data

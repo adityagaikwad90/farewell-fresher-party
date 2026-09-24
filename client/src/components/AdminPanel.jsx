@@ -11,7 +11,6 @@ import {
   Sparkles,
   Lock,
   IndianRupee,
-  Database,
   CheckCircle2,
   GraduationCap
 } from 'lucide-react';
@@ -24,7 +23,6 @@ export default function AdminPanel({ onBackToForm }) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [stats, setStats] = useState(null);
-  const [dbInfo, setDbInfo] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
   // Filters & Search
@@ -61,7 +59,6 @@ export default function AdminPanel({ onBackToForm }) {
       // Fetch responses
       await loadResponses(tokenToUse);
       await loadStats(tokenToUse);
-      await loadHealth();
     } catch (err) {
       setAuthError(err.message || 'Authentication error.');
       setIsAuthenticated(false);
@@ -91,17 +88,7 @@ export default function AdminPanel({ onBackToForm }) {
     }
   };
 
-  const loadHealth = async () => {
-    try {
-      const res = await fetch(`${API_BASE}/api/health`);
-      if (res.ok) {
-        const json = await res.json();
-        setDbInfo(json.database);
-      }
-    } catch (e) {
-      console.warn('Could not fetch db status');
-    }
-  };
+
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
@@ -278,26 +265,7 @@ export default function AdminPanel({ onBackToForm }) {
           </div>
         </div>
 
-        {/* Database Status Banner */}
-        {dbInfo && (
-          <div
-            className={`glass-panel p-3.5 sm:p-4 mb-6 flex items-center justify-between flex-wrap gap-2 text-xs rounded-2xl border ${
-              dbInfo.isFirebaseActive ? 'border-emerald-500/40 bg-emerald-950/20' : 'border-amber-500/40 bg-amber-950/20'
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Database size={16} className={dbInfo.isFirebaseActive ? 'text-emerald-400' : 'text-amber-400'} />
-              <span>
-                <strong className="text-white">Storage Provider:</strong> <span className="text-slate-300">{dbInfo.storageType}</span>
-              </span>
-            </div>
-            {!dbInfo.isFirebaseActive && (
-              <span className="text-slate-400">
-                To connect to Cloud Firestore, place your Firebase credentials in <code>server/serviceAccountKey.json</code> or set <code>FIREBASE_</code> in <code>.env</code>.
-              </span>
-            )}
-          </div>
-        )}
+
 
         {/* Metric Overview Cards */}
         {stats && (

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { CheckCircle2, MessageCircle, X, Sparkles } from 'lucide-react';
+import { WHATSAPP_GROUP_URL } from '../config';
 
 export default function SuccessModal({ data, onClose, onRegisterAnother }) {
   useEffect(() => {
@@ -88,7 +89,7 @@ export default function SuccessModal({ data, onClose, onRegisterAnother }) {
           </p>
 
           <a
-            href="https://chat.whatsapp.com/BtrQQGn4MrxEF0zioEeE67"
+            href={WHATSAPP_GROUP_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-whatsapp w-full py-3 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-emerald-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 inline-flex items-center justify-center gap-2"

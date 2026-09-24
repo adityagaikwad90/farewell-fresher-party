@@ -197,6 +197,20 @@ h1, h2, h3, h4, .font-display {
   box-shadow: 0 6px 22px rgba(22, 163, 74, 0.45);
 }
 
+.btn-instagram {
+  background: linear-gradient(135deg, #F58529 0%, #DD2A7B 50%, #8134AF 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 18px rgba(221, 42, 123, 0.35);
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-instagram:hover {
+  background: linear-gradient(135deg, #FA7E1E 0%, #E1306C 50%, #C13584 75%, #833AB4 100%);
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 24px rgba(221, 42, 123, 0.5);
+}
+
 /* Inputs & Form Elements */
 .form-group {
   display: flex;

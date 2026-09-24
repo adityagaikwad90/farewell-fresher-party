@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Users,
-  ShieldCheck,
   Search,
   Filter,
   Download,
@@ -14,7 +13,6 @@ import {
   IndianRupee,
   Database,
   CheckCircle2,
-  AlertTriangle,
   GraduationCap
 } from 'lucide-react';
 import { API_BASE } from '../config';
@@ -172,63 +170,35 @@ export default function AdminPanel({ onBackToForm }) {
   // If not authenticated, show passcode login screen
   if (!isAuthenticated) {
     return (
-      <div style={{ padding: '4rem 1.5rem', minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div
-          className="glass-panel"
-          style={{
-            width: '100%',
-            maxWidth: '440px',
-            padding: '2.5rem',
-            textAlign: 'center',
-            border: '1px solid rgba(168, 85, 247, 0.35)',
-            boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
-          }}
-        >
-          <div
-            style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '16px',
-              background: 'linear-gradient(135deg, #9333ea, #ec4899)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 1.25rem',
-              boxShadow: '0 0 20px rgba(168, 85, 247, 0.4)',
-            }}
-          >
-            <Lock size={28} color="#ffffff" />
+      <div className="py-16 md:py-24 px-4 sm:px-6 min-h-[70vh] flex items-center justify-center relative z-10">
+        <div className="glass-panel w-full max-w-[440px] p-7 sm:p-9 text-center border border-violet-500/30 bg-[#0B1020]/90 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_35px_rgba(124,58,237,0.15)] relative overflow-hidden">
+          
+          {/* Subtle decorative top gradient line */}
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-400" />
+
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-violet-600/35 border border-white/20">
+            <Lock size={26} color="#ffffff" />
           </div>
 
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff', marginBottom: '0.4rem' }}>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-white mb-1.5 font-display tracking-tight">
             Admin Portal Access
           </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginBottom: '1.75rem' }}>
+          <p className="text-slate-400 text-xs sm:text-sm mb-6 leading-relaxed">
             Enter your organizer passcode to access structured responses and event analytics.
           </p>
 
           {authError && (
-            <div
-              style={{
-                padding: '0.75rem 1rem',
-                borderRadius: '10px',
-                backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                border: '1px solid rgba(239, 68, 68, 0.4)',
-                color: '#fca5a5',
-                fontSize: '0.85rem',
-                marginBottom: '1.25rem',
-              }}
-            >
+            <div className="p-3.5 rounded-xl bg-rose-500/15 border border-rose-500/40 text-rose-200 text-xs sm:text-sm mb-5 animate-fadeIn">
               {authError}
             </div>
           )}
 
           <form onSubmit={handleLoginSubmit}>
-            <div style={{ marginBottom: '1.25rem' }}>
+            <div className="mb-4">
               <input
                 type="password"
-                className="form-input"
-                placeholder="Enter Admin Passcode (default: mca2026admin)"
+                className="form-input text-center tracking-wider"
+                placeholder="Enter Admin Passcode"
                 value={passcode}
                 onChange={(e) => setPasscode(e.target.value)}
                 autoFocus
@@ -238,19 +208,17 @@ export default function AdminPanel({ onBackToForm }) {
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-primary"
-              style={{ width: '100%', padding: '0.85rem', fontSize: '0.95rem' }}
+              className="btn btn-primary w-full py-3.5 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-violet-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 justify-center"
             >
               {loading ? 'Authenticating...' : 'Unlock Admin Dashboard'}
             </button>
           </form>
 
-          <div style={{ marginTop: '1.25rem' }}>
+          <div className="mt-5">
             <button
               type="button"
               onClick={onBackToForm}
-              className="btn btn-secondary"
-              style={{ width: '100%', fontSize: '0.85rem' }}
+              className="btn btn-secondary w-full py-2.5 text-xs sm:text-sm rounded-xl font-semibold hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 justify-center"
             >
               Back to Registration Form
             </button>
@@ -262,39 +230,29 @@ export default function AdminPanel({ onBackToForm }) {
 
   // Authenticated Admin Dashboard
   return (
-    <div style={{ padding: '2rem 1.5rem 5rem', position: 'relative', zIndex: 1 }}>
-      <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+    <div className="py-8 md:py-12 px-4 sm:px-6 relative z-10 pb-20">
+      <div className="max-w-[1240px] mx-auto">
 
         {/* Top Header */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '1rem',
-            marginBottom: '1.75rem',
-          }}
-        >
+        <div className="flex items-center justify-between flex-wrap gap-4 mb-7">
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#ffffff' }}>
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-display">
                 Event Management Dashboard
               </h1>
               <span className="badge badge-emerald">
                 <CheckCircle2 size={12} /> Live
               </span>
             </div>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
+            <p className="text-slate-400 text-xs sm:text-sm mt-0.5">
               Structured registration submissions for MCA Fresher &amp; Farewell 2026
             </p>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <div className="flex items-center gap-2.5 flex-wrap">
             <button
               onClick={() => { loadResponses(passcode); loadStats(passcode); }}
-              className="btn btn-secondary"
-              style={{ padding: '0.6rem 1rem', fontSize: '0.85rem' }}
+              className="btn btn-secondary px-3.5 py-2 text-xs sm:text-sm rounded-xl font-semibold inline-flex items-center gap-1.5"
               title="Refresh"
             >
               <RefreshCw size={15} />
@@ -303,8 +261,7 @@ export default function AdminPanel({ onBackToForm }) {
 
             <button
               onClick={handleExportCsv}
-              className="btn btn-primary"
-              style={{ padding: '0.6rem 1.1rem', fontSize: '0.85rem' }}
+              className="btn btn-primary px-4 py-2 text-xs sm:text-sm rounded-xl font-bold shadow-md shadow-violet-600/25 inline-flex items-center gap-1.5"
             >
               <Download size={15} />
               <span>Export CSV</span>
@@ -312,8 +269,7 @@ export default function AdminPanel({ onBackToForm }) {
 
             <button
               onClick={handleLogout}
-              className="btn btn-secondary"
-              style={{ padding: '0.6rem 1rem', fontSize: '0.85rem' }}
+              className="btn btn-secondary px-3.5 py-2 text-xs sm:text-sm rounded-xl font-semibold inline-flex items-center gap-1.5"
               title="Log out"
             >
               <LogOut size={15} />
@@ -325,27 +281,18 @@ export default function AdminPanel({ onBackToForm }) {
         {/* Database Status Banner */}
         {dbInfo && (
           <div
-            className="glass-panel"
-            style={{
-              padding: '0.75rem 1.25rem',
-              marginBottom: '1.5rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '0.5rem',
-              fontSize: '0.82rem',
-              borderColor: dbInfo.isFirebaseActive ? 'rgba(16, 185, 129, 0.4)' : 'rgba(245, 158, 11, 0.4)',
-            }}
+            className={`glass-panel p-3.5 sm:p-4 mb-6 flex items-center justify-between flex-wrap gap-2 text-xs rounded-2xl border ${
+              dbInfo.isFirebaseActive ? 'border-emerald-500/40 bg-emerald-950/20' : 'border-amber-500/40 bg-amber-950/20'
+            }`}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Database size={16} color={dbInfo.isFirebaseActive ? '#10b981' : '#f59e0b'} />
+            <div className="flex items-center gap-2">
+              <Database size={16} className={dbInfo.isFirebaseActive ? 'text-emerald-400' : 'text-amber-400'} />
               <span>
-                <strong>Storage Provider:</strong> {dbInfo.storageType}
+                <strong className="text-white">Storage Provider:</strong> <span className="text-slate-300">{dbInfo.storageType}</span>
               </span>
             </div>
             {!dbInfo.isFirebaseActive && (
-              <span style={{ color: 'var(--text-secondary)' }}>
+              <span className="text-slate-400">
                 To connect to Cloud Firestore, place your Firebase credentials in <code>server/serviceAccountKey.json</code> or set <code>FIREBASE_</code> in <code>.env</code>.
               </span>
             )}
@@ -354,83 +301,84 @@ export default function AdminPanel({ onBackToForm }) {
 
         {/* Metric Overview Cards */}
         {stats && (
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: '1rem',
-              marginBottom: '1.75rem',
-            }}
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
             {/* Total Registrations */}
-            <div className="glass-panel" style={{ padding: '1.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase' }}>
+            <div className="glass-panel p-5 rounded-2xl bg-[#0B1020]/75 border-white/10 hover:border-violet-500/40 hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-black/30">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[0.72rem] text-slate-400 font-bold uppercase tracking-wider">
                   Total Registrations
                 </span>
-                <Users size={18} color="#a855f7" />
+                <div className="w-8 h-8 rounded-lg bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-violet-400">
+                  <Users size={16} />
+                </div>
               </div>
-              <div style={{ fontSize: '2rem', fontWeight: 900, color: '#ffffff' }}>
+              <div className="text-3xl font-black text-white font-display">
                 {stats.total}
               </div>
-              <div style={{ fontSize: '0.75rem', color: '#c084fc', marginTop: '0.2rem' }}>
+              <div className="text-xs text-violet-300 mt-1 font-medium">
                 First-year MCA attendees
               </div>
             </div>
 
             {/* Division A vs B */}
-            <div className="glass-panel" style={{ padding: '1.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase' }}>
+            <div className="glass-panel p-5 rounded-2xl bg-[#0B1020]/75 border-white/10 hover:border-cyan-500/40 hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-black/30">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[0.72rem] text-slate-400 font-bold uppercase tracking-wider">
                   Divisions Breakdown
                 </span>
-                <GraduationCap size={18} color="#06b6d4" />
-              </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
-                <div>
-                  <span style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff' }}>{stats.divStats.A}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8', marginLeft: '0.3rem' }}>Div A</span>
-                </div>
-                <div style={{ color: 'rgba(255,255,255,0.2)' }}>|</div>
-                <div>
-                  <span style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff' }}>{stats.divStats.B}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8', marginLeft: '0.3rem' }}>Div B</span>
+                <div className="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                  <GraduationCap size={16} />
                 </div>
               </div>
-              <div style={{ height: '5px', background: 'rgba(255,255,255,0.1)', borderRadius: '999px', marginTop: '0.65rem', overflow: 'hidden', display: 'flex' }}>
-                <div style={{ width: `${stats.total > 0 ? (stats.divStats.A / stats.total) * 100 : 50}%`, background: '#a855f7' }} />
-                <div style={{ width: `${stats.total > 0 ? (stats.divStats.B / stats.total) * 100 : 50}%`, background: '#ec4899' }} />
+              <div className="flex items-baseline gap-3">
+                <div>
+                  <span className="text-2xl font-black text-white font-display">{stats.divStats.A}</span>
+                  <span className="text-xs text-slate-400 ml-1 font-semibold">Div A</span>
+                </div>
+                <div className="text-white/20">|</div>
+                <div>
+                  <span className="text-2xl font-black text-white font-display">{stats.divStats.B}</span>
+                  <span className="text-xs text-slate-400 ml-1 font-semibold">Div B</span>
+                </div>
+              </div>
+              <div className="h-1.5 bg-white/10 rounded-full mt-3 overflow-hidden flex">
+                <div style={{ width: `${stats.total > 0 ? (stats.divStats.A / stats.total) * 100 : 50}%` }} className="bg-violet-500" />
+                <div style={{ width: `${stats.total > 0 ? (stats.divStats.B / stats.total) * 100 : 50}%` }} className="bg-fuchsia-500" />
               </div>
             </div>
 
             {/* Talent Registrations */}
-            <div className="glass-panel" style={{ padding: '1.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase' }}>
+            <div className="glass-panel p-5 rounded-2xl bg-[#0B1020]/75 border-white/10 hover:border-pink-500/40 hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-black/30">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[0.72rem] text-slate-400 font-bold uppercase tracking-wider">
                   Performers &amp; Talents
                 </span>
-                <Sparkles size={18} color="#ec4899" />
+                <div className="w-8 h-8 rounded-lg bg-pink-500/15 border border-pink-500/30 flex items-center justify-center text-pink-400">
+                  <Sparkles size={16} />
+                </div>
               </div>
-              <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginTop: '0.3rem' }}>
-                <span className="badge badge-pink">🎤 {stats.talentStats.SINGING} Singing</span>
-                <span className="badge badge-purple">💃 {stats.talentStats.DANCING} Dance</span>
-                <span className="badge badge-amber">🎭 {stats.talentStats['STAND UP COMEDY']} Comedy</span>
-                {stats.talentStats.OTHER > 0 && <span className="badge badge-emerald">✨ {stats.talentStats.OTHER} Other</span>}
+              <div className="flex flex-wrap gap-1.5 mt-1.5">
+                <span className="badge badge-pink text-[0.72rem]">🎤 {stats.talentStats.SINGING} Singing</span>
+                <span className="badge badge-purple text-[0.72rem]">💃 {stats.talentStats.DANCING} Dance</span>
+                <span className="badge badge-amber text-[0.72rem]">🎭 {stats.talentStats['STAND UP COMEDY']} Comedy</span>
+                {stats.talentStats.OTHER > 0 && <span className="badge badge-emerald text-[0.72rem]">✨ {stats.talentStats.OTHER} Other</span>}
               </div>
             </div>
 
             {/* Estimated Fee Pool */}
-            <div className="glass-panel" style={{ padding: '1.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase' }}>
+            <div className="glass-panel p-5 rounded-2xl bg-[#0B1020]/75 border-white/10 hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-black/30">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[0.72rem] text-slate-400 font-bold uppercase tracking-wider">
                   Fee Pool Projection
                 </span>
-                <IndianRupee size={18} color="#fbbf24" />
+                <div className="w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                  <IndianRupee size={16} />
+                </div>
               </div>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fbbf24' }}>
+              <div className="text-2xl font-black text-amber-300 font-display">
                 ₹{stats.estimatedFeePool.min.toLocaleString()} - ₹{stats.estimatedFeePool.max.toLocaleString()}
               </div>
-              <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '0.2rem' }}>
+              <div className="text-xs text-slate-400 mt-1 font-medium">
                 @ ₹500 - ₹700 per person
               </div>
             </div>
@@ -438,25 +386,13 @@ export default function AdminPanel({ onBackToForm }) {
         )}
 
         {/* Filter & Search Bar */}
-        <div
-          className="glass-panel"
-          style={{
-            padding: '1rem 1.25rem',
-            marginBottom: '1.25rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '1rem',
-          }}
-        >
+        <div className="glass-panel p-4 mb-5 flex items-center justify-between flex-wrap gap-3.5 rounded-2xl border-white/10 bg-[#0B1020]/75">
           {/* Search Box */}
-          <div style={{ position: 'relative', flex: '1 1 280px', maxWidth: '420px' }}>
-            <Search size={16} color="#94a3b8" style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)' }} />
+          <div className="relative flex-1 min-w-[260px] max-w-[420px]">
+            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
             <input
               type="text"
-              className="form-input"
-              style={{ paddingLeft: '2.5rem', fontSize: '0.88rem' }}
+              className="form-input pl-10 text-xs sm:text-sm py-2.5 rounded-xl"
               placeholder="Search by name, contact, email, pass ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -464,21 +400,16 @@ export default function AdminPanel({ onBackToForm }) {
           </div>
 
           {/* Division Selector Tabs */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+          <div className="flex items-center gap-1.5">
             {['ALL', 'A', 'B'].map(divOpt => (
               <button
                 key={divOpt}
                 onClick={() => setSelectedDiv(divOpt)}
-                style={{
-                  padding: '0.45rem 0.85rem',
-                  borderRadius: '8px',
-                  border: selectedDiv === divOpt ? '1px solid #a855f7' : '1px solid rgba(255,255,255,0.1)',
-                  background: selectedDiv === divOpt ? 'rgba(168, 85, 247, 0.25)' : 'rgba(255,255,255,0.04)',
-                  color: selectedDiv === divOpt ? '#ffffff' : '#cbd5e1',
-                  fontSize: '0.82rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                  selectedDiv === divOpt
+                    ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30 border border-violet-500'
+                    : 'bg-white/[0.04] text-slate-300 hover:bg-white/[0.08] border border-white/10'
+                }`}
               >
                 {divOpt === 'ALL' ? 'All Divisions' : `Div ${divOpt}`}
               </button>
@@ -486,11 +417,10 @@ export default function AdminPanel({ onBackToForm }) {
           </div>
 
           {/* Talent Filter */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Filter size={15} color="#94a3b8" />
+          <div className="flex items-center gap-2">
+            <Filter size={15} className="text-slate-400" />
             <select
-              className="form-select"
-              style={{ padding: '0.45rem 0.8rem', fontSize: '0.82rem', width: 'auto' }}
+              className="form-select text-xs py-2 px-3 rounded-xl w-auto cursor-pointer"
               value={selectedTalent}
               onChange={(e) => setSelectedTalent(e.target.value)}
             >
@@ -505,24 +435,24 @@ export default function AdminPanel({ onBackToForm }) {
         </div>
 
         {/* Structured Data Table */}
-        <div className="glass-panel" style={{ overflowX: 'auto', padding: '0' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
+        <div className="glass-panel overflow-x-auto p-0 rounded-2xl border-white/10 bg-[#0B1020]/75 shadow-2xl shadow-black/40">
+          <table className="w-full border-collapse text-left text-xs sm:text-sm">
             <thead>
-              <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(255, 255, 255, 0.02)' }}>
-                <th style={{ padding: '1rem', color: '#94a3b8', fontWeight: 600 }}>Pass ID</th>
-                <th style={{ padding: '1rem', color: '#94a3b8', fontWeight: 600 }}>Student Name</th>
-                <th style={{ padding: '1rem', color: '#94a3b8', fontWeight: 600 }}>Div</th>
-                <th style={{ padding: '1rem', color: '#94a3b8', fontWeight: 600 }}>Contact Info</th>
-                <th style={{ padding: '1rem', color: '#94a3b8', fontWeight: 600 }}>Talent / Performance</th>
-                <th style={{ padding: '1rem', color: '#94a3b8', fontWeight: 600 }}>Party Suggestions</th>
-                <th style={{ padding: '1rem', color: '#94a3b8', fontWeight: 600 }}>Registered</th>
-                <th style={{ padding: '1rem', color: '#94a3b8', fontWeight: 600, textAlign: 'right' }}>Actions</th>
+              <tr className="border-b border-white/10 bg-white/[0.02]">
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Pass ID</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Student Name</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Div</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Contact Info</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Talent / Performance</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Party Suggestions</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Registered</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem] text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan={8} style={{ padding: '3rem 1rem', textAlign: 'center', color: '#94a3b8' }}>
+                  <td colSpan={8} className="p-12 text-center text-slate-400">
                     No registration records found.
                   </td>
                 </tr>
@@ -530,62 +460,55 @@ export default function AdminPanel({ onBackToForm }) {
                 filteredData.map((item, idx) => (
                   <tr
                     key={item.id || idx}
-                    style={{
-                      borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-                      transition: 'background-color 0.15s ease',
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                    className="border-b border-white/5 hover:bg-white/[0.03] transition-colors duration-150"
                   >
-                    <td style={{ padding: '0.9rem 1rem', fontFamily: 'monospace', fontWeight: 700, color: '#c084fc' }}>
+                    <td className="p-3.5 font-mono font-bold text-violet-400">
                       {item.regNumber || `MCA-${idx + 1}`}
                     </td>
-                    <td style={{ padding: '0.9rem 1rem' }}>
-                      <div style={{ fontWeight: 700, color: '#f8fafc' }}>{item.fullName}</div>
+                    <td className="p-3.5">
+                      <div className="font-bold text-white">{item.fullName}</div>
                     </td>
-                    <td style={{ padding: '0.9rem 1rem' }}>
+                    <td className="p-3.5">
                       <span className={`badge ${item.div === 'A' ? 'badge-purple' : 'badge-pink'}`}>
                         Div {item.div}
                       </span>
                     </td>
-                    <td style={{ padding: '0.9rem 1rem' }}>
-                      <div style={{ color: '#cbd5e1' }}>{item.contact}</div>
-                      <div style={{ fontSize: '0.76rem', color: '#94a3b8' }}>{item.email}</div>
+                    <td className="p-3.5">
+                      <div className="text-slate-200">{item.contact}</div>
+                      <div className="text-[0.75rem] text-slate-400">{item.email}</div>
                     </td>
-                    <td style={{ padding: '0.9rem 1rem' }}>
+                    <td className="p-3.5">
                       {item.talent && item.talent !== 'None' ? (
-                        <span className="badge badge-amber" style={{ maxWidth: '170px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <span className="badge badge-amber max-w-[170px] truncate block">
                           {item.talent}
                         </span>
                       ) : (
-                        <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>None</span>
+                        <span className="text-slate-500 text-xs">None</span>
                       )}
                     </td>
-                    <td style={{ padding: '0.9rem 1rem', maxWidth: '200px' }}>
-                      <div style={{ fontSize: '0.8rem', color: '#cbd5e1', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <td className="p-3.5 max-w-[200px]">
+                      <div className="text-xs text-slate-300 truncate">
                         {item.partyWishes || item.gameSuggestion || '-'}
                       </div>
                     </td>
-                    <td style={{ padding: '0.9rem 1rem', fontSize: '0.78rem', color: '#94a3b8', whiteSpace: 'nowrap' }}>
+                    <td className="p-3.5 text-xs text-slate-400 whitespace-nowrap">
                       {item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'Recent'}
                     </td>
-                    <td style={{ padding: '0.9rem 1rem', textAlign: 'right' }}>
-                      <div style={{ display: 'inline-flex', gap: '0.4rem' }}>
+                    <td className="p-3.5 text-right">
+                      <div className="inline-flex gap-1.5">
                         <button
                           onClick={() => setSelectedItem(item)}
-                          className="btn btn-secondary"
-                          style={{ padding: '0.35rem 0.55rem', borderRadius: '6px' }}
+                          className="btn btn-secondary p-2 rounded-lg"
                           title="View Details"
                         >
-                          <Eye size={15} color="#38bdf8" />
+                          <Eye size={15} className="text-cyan-400" />
                         </button>
                         <button
                           onClick={() => handleDelete(item.id, item.fullName)}
-                          className="btn btn-secondary"
-                          style={{ padding: '0.35rem 0.55rem', borderRadius: '6px' }}
+                          className="btn btn-secondary p-2 rounded-lg"
                           title="Delete Response"
                         >
-                          <Trash2 size={15} color="#f43f5e" />
+                          <Trash2 size={15} className="text-rose-400" />
                         </button>
                       </div>
                     </td>
@@ -598,35 +521,15 @@ export default function AdminPanel({ onBackToForm }) {
 
         {/* Modal: Full View Details */}
         {selectedItem && (
-          <div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 100,
-              backgroundColor: 'rgba(5, 6, 15, 0.85)',
-              backdropFilter: 'blur(8px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '1.5rem',
-            }}
-          >
-            <div
-              className="glass-panel"
-              style={{
-                width: '100%',
-                maxWidth: '600px',
-                padding: '2rem',
-                border: '1px solid rgba(168, 85, 247, 0.4)',
-                boxShadow: '0 20px 50px rgba(0,0,0,0.6)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.75rem' }}>
+          <div className="fixed inset-0 z-50 bg-[#070A13]/85 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
+            <div className="glass-panel w-full max-w-[600px] p-6 sm:p-8 rounded-3xl border border-violet-500/40 bg-[#0B1020]/95 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(124,58,237,0.15)] relative overflow-hidden">
+              
+              <div className="flex items-center justify-between mb-5 border-b border-white/10 pb-4">
                 <div>
-                  <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff' }}>
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-white font-display">
                     {selectedItem.fullName}
                   </h3>
-                  <span style={{ fontSize: '0.8rem', color: '#c084fc', fontFamily: 'monospace' }}>
+                  <span className="text-xs text-violet-400 font-mono">
                     {selectedItem.regNumber || selectedItem.id}
                   </span>
                 </div>
@@ -635,46 +538,45 @@ export default function AdminPanel({ onBackToForm }) {
                 </span>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginBottom: '1.25rem' }}>
+              <div className="grid grid-cols-2 gap-4 mb-5">
                 <div>
-                  <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>CONTACT NUMBER</div>
-                  <div style={{ color: '#f8fafc', fontWeight: 600 }}>{selectedItem.contact}</div>
+                  <div className="text-[0.7rem] text-slate-400 font-bold uppercase tracking-wider">CONTACT NUMBER</div>
+                  <div className="text-white font-semibold mt-0.5">{selectedItem.contact}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>EMAIL ADDRESS</div>
-                  <div style={{ color: '#f8fafc', fontWeight: 600 }}>{selectedItem.email}</div>
+                  <div className="text-[0.7rem] text-slate-400 font-bold uppercase tracking-wider">EMAIL ADDRESS</div>
+                  <div className="text-white font-semibold mt-0.5 truncate">{selectedItem.email}</div>
                 </div>
-                <div style={{ gridColumn: 'span 2' }}>
-                  <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>TALENT &amp; EVENT PARTICIPATION</div>
-                  <div style={{ color: '#fbbf24', fontWeight: 700, marginTop: '0.2rem' }}>
+                <div className="col-span-2">
+                  <div className="text-[0.7rem] text-slate-400 font-bold uppercase tracking-wider">TALENT &amp; EVENT PARTICIPATION</div>
+                  <div className="text-amber-300 font-bold mt-0.5">
                     {selectedItem.talent || 'General Attendee'}
                   </div>
                 </div>
               </div>
 
-              <div style={{ marginBottom: '1.25rem', background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '12px' }}>
-                <div style={{ fontSize: '0.78rem', color: '#a855f7', fontWeight: 700, marginBottom: '0.3rem' }}>
+              <div className="mb-4 bg-white/[0.03] border border-white/5 p-4 rounded-xl">
+                <div className="text-xs text-violet-400 font-bold mb-1">
                   What would you like to see at the Fresher Party?
                 </div>
-                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>
-                  {selectedItem.partyWishes || <em>No response provided.</em>}
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">
+                  {selectedItem.partyWishes || <em className="text-slate-500">No response provided.</em>}
                 </p>
               </div>
 
-              <div style={{ marginBottom: '1.5rem', background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '12px' }}>
-                <div style={{ fontSize: '0.78rem', color: '#ec4899', fontWeight: 700, marginBottom: '0.3rem' }}>
+              <div className="mb-6 bg-white/[0.03] border border-white/5 p-4 rounded-xl">
+                <div className="text-xs text-fuchsia-400 font-bold mb-1">
                   Suggest a fun activity/game for the party:
                 </div>
-                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>
-                  {selectedItem.gameSuggestion || <em>No response provided.</em>}
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">
+                  {selectedItem.gameSuggestion || <em className="text-slate-500">No response provided.</em>}
                 </p>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+              <div className="flex justify-end gap-3">
                 <button
                   onClick={() => setSelectedItem(null)}
-                  className="btn btn-secondary"
-                  style={{ padding: '0.6rem 1.25rem', fontSize: '0.9rem' }}
+                  className="btn btn-secondary px-6 py-2.5 text-sm rounded-xl font-semibold"
                 >
                   Close
                 </button>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Heart, Flame, ArrowDown, MessageCircle, IndianRupee, Clock } from 'lucide-react';
+import { Sparkles, ArrowDown, IndianRupee, Clock } from 'lucide-react';
 
 export default function Hero({ onScrollToForm }) {
   // Target celebratory date: October 2, 2026 at 10:00 AM (Approx 1st - 2nd October)
@@ -30,42 +30,32 @@ export default function Hero({ onScrollToForm }) {
   }, []);
 
   return (
-    <section style={{ padding: '3rem 1.5rem 2rem', position: 'relative', zIndex: 1 }}>
-      <div style={{ maxWidth: '920px', margin: '0 auto', textAlign: 'center' }}>
+    <section className="py-12 md:py-16 px-4 sm:px-6 relative z-10">
+      <div className="max-w-[920px] mx-auto text-center">
         
         {/* Main Title */}
-        <h1
-          style={{
-            fontSize: 'clamp(2.2rem, 5.5vw, 3.8rem)',
-            fontWeight: 900,
-            lineHeight: 1.15,
-            marginBottom: '1.25rem',
-          }}
-        >
-          WELCOME TO THE <br />
-          <span className="text-gradient">MCA FRESHER &amp; FAREWELL</span>
+        <h1 className="text-[2.2rem] sm:text-[3.2rem] md:text-[3.8rem] font-black leading-[1.15] mb-5 tracking-tight font-display">
+          <span className="block text-xs sm:text-sm md:text-base font-bold tracking-[0.2em] text-slate-300 uppercase mb-2">
+            WELCOME TO THE
+          </span>
+          <span className="bg-gradient-to-r from-violet-400 via-fuchsia-300 to-amber-300 bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(124,58,237,0.35)]">
+            MCA FRESHER &amp; FAREWELL
+          </span>
           <br />
-          CELEBRATION 2026! ✨
+          <span className="text-white drop-shadow-md">
+            CELEBRATION 2026! ✨
+          </span>
         </h1>
 
         {/* Animated Countdown Timer */}
-        <div style={{ margin: '1rem 0 2rem' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.85rem' }}>
-            <Clock size={15} color="#94a3b8" />
-            <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              Countdown to Celebration • 1st – 2nd October 2026
-            </span>
+        <div className="my-6 md:my-8">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-slate-300 text-xs font-semibold uppercase tracking-wider mb-4 shadow-sm backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <Clock size={14} className="text-slate-400" />
+            <span>Countdown to Celebration • 1st – 2nd October 2026</span>
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.75rem',
-              flexWrap: 'wrap',
-            }}
-          >
+          <div className="flex items-center justify-center gap-2.5 sm:gap-3.5 flex-wrap">
           {[
             { label: 'Days', val: timeLeft.days },
             { label: 'Hours', val: timeLeft.hours },
@@ -74,20 +64,12 @@ export default function Hero({ onScrollToForm }) {
           ].map((item, idx) => (
             <div
               key={idx}
-              className="glass-panel"
-              style={{
-                padding: '0.65rem 1rem',
-                minWidth: '72px',
-                textAlign: 'center',
-                borderRadius: '12px',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                background: 'rgba(17, 24, 39, 0.65)',
-              }}
+              className="glass-panel py-2.5 sm:py-3 px-3 sm:px-4 min-w-[72px] sm:min-w-[84px] text-center rounded-2xl border border-white/10 bg-[#0B1020]/75 hover:border-violet-500/40 hover:-translate-y-1 hover:shadow-[0_10px_25px_-5px_rgba(124,58,237,0.25)] transition-all duration-300"
             >
-              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff', fontFamily: 'var(--font-display)' }}>
+              <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white font-display tracking-tight">
                 {String(item.val).padStart(2, '0')}
               </div>
-              <div style={{ fontSize: '0.68rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
+              <div className="text-[0.65rem] sm:text-[0.68rem] text-slate-400 uppercase tracking-wider font-bold mt-0.5">
                 {item.label}
               </div>
             </div>
@@ -96,97 +78,56 @@ export default function Hero({ onScrollToForm }) {
         </div>
 
         {/* Welcoming Letter Card */}
-        <div
-          className="glass-panel"
-          style={{
-            padding: '2.2rem 2rem',
-            textAlign: 'left',
-            margin: '1rem 0 2rem',
-            position: 'relative',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            background: 'rgba(17, 24, 39, 0.7)',
-            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-            <span style={{ fontSize: '1.35rem' }}>🎓</span>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#f8fafc' }}>
+        <div className="glass-panel p-6 sm:p-9 text-left my-8 relative rounded-3xl border border-white/10 bg-[#0B1020]/80 shadow-2xl shadow-black/50 hover:border-violet-500/30 transition-all duration-300 overflow-hidden">
+          {/* Subtle festive gradient top line */}
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-400" />
+
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-xl shrink-0 shadow-inner">
+              🎓
+            </div>
+            <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight font-display">
               Dear MCA First Year Students,
             </h3>
           </div>
 
-          <p style={{ color: '#cbd5e1', fontSize: '0.96rem', marginBottom: '1rem', lineHeight: 1.7 }}>
-            A new journey has begun for you, and we, the <strong style={{ color: '#e2e8f0' }}>MCA 2nd Year students</strong>, are excited to welcome you to the MCA family! 🎓❤️
+          <p className="text-slate-300 text-[0.95rem] sm:text-base leading-relaxed mb-4">
+            A new journey has begun for you, and we, the <strong className="text-violet-300 font-bold">MCA 2nd Year students</strong>, are excited to welcome you to the MCA family! 🎓❤️
           </p>
-          <p style={{ color: '#cbd5e1', fontSize: '0.96rem', marginBottom: '1rem', lineHeight: 1.7 }}>
-            At the same time, we are also celebrating the journey, memories, friendships, and achievements of our <strong style={{ color: '#e2e8f0' }}>MCA 2nd Year outgoing students</strong> as they take their next step toward a new chapter. 🌟
+          <p className="text-slate-300 text-[0.95rem] sm:text-base leading-relaxed mb-4">
+            At the same time, we are also celebrating the journey, memories, friendships, and achievements of our <strong className="text-amber-300 font-bold">MCA 2nd Year outgoing students</strong> as they take their next step toward a new chapter. 🌟
           </p>
-          <p style={{ color: '#cbd5e1', fontSize: '0.96rem', marginBottom: '1.25rem', lineHeight: 1.7 }}>
-            So, this year, we are bringing everyone together for one special celebration — <strong style={{ color: '#c7d2fe' }}>FRESHER + FAREWELL 2026! 🥳</strong>
+          <p className="text-slate-300 text-[0.95rem] sm:text-base leading-relaxed mb-5">
+            So, this year, we are bringing everyone together for one special celebration — <strong className="bg-gradient-to-r from-violet-300 via-fuchsia-300 to-amber-300 bg-clip-text text-transparent font-extrabold">FRESHER + FAREWELL 2026! 🥳</strong>
           </p>
-          <p style={{ color: '#94a3b8', fontSize: '0.92rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-            This portal is specially created for MCA First Year students to collect your basic information and know your interests, preferences, and participation for the event. This is not just another college event. It is a chance to <strong style={{ color: '#f8fafc' }}>meet new people, celebrate friendships, appreciate our seniors</strong>, and create memories that we'll carry with us long after college. ❤️
+          <p className="text-slate-400 text-sm sm:text-[0.94rem] leading-relaxed mb-6">
+            This portal is specially created for MCA First Year students to collect your basic information and know your interests, preferences, and participation for the event. This is not just another college event. It is a chance to <strong className="text-slate-200 font-semibold">meet new people, celebrate friendships, appreciate our seniors</strong>, and create memories that we'll carry with us long after college. ❤️
           </p>
 
           {/* Slogan Banner */}
-          <div
-            style={{
-              padding: '0.9rem 1.25rem',
-              borderRadius: '12px',
-              background: 'rgba(99, 102, 241, 0.08)',
-              border: '1px solid rgba(99, 102, 241, 0.2)',
-              textAlign: 'center',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.6rem',
-              flexWrap: 'wrap',
-            }}
-          >
-            <Sparkles size={18} color="#818cf8" />
-            <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#e2e8f0', letterSpacing: '0.02em' }}>
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-violet-950/40 via-fuchsia-950/30 to-violet-950/40 border border-violet-500/30 text-center flex items-center justify-center gap-3 flex-wrap shadow-lg shadow-violet-950/20">
+            <Sparkles size={18} className="text-violet-400 shrink-0 animate-pulse" />
+            <span className="font-bold text-sm sm:text-base text-slate-100 tracking-wide font-display">
               One Department. Two Batches. One Celebration. Countless Memories.
             </span>
-            <Sparkles size={18} color="#818cf8" />
+            <Sparkles size={18} className="text-violet-400 shrink-0 animate-pulse" />
           </div>
         </div>
 
         {/* Entry Fee Information Card */}
-        <div style={{ maxWidth: '440px', margin: '1.5rem auto 2.2rem' }}>
-          <div
-            className="glass-panel"
-            style={{
-              padding: '1.15rem 1.3rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1.1rem',
-              borderLeft: '3px solid #6366f1',
-              textAlign: 'left',
-              background: 'rgba(17, 24, 39, 0.65)',
-            }}
-          >
-            <div
-              style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '10px',
-                background: 'rgba(99, 102, 241, 0.12)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-              }}
-            >
-              <IndianRupee size={22} color="#a5b4fc" />
+        <div className="max-w-[450px] mx-auto my-6 sm:my-8">
+          <div className="glass-panel p-4 sm:p-5 flex items-center gap-4 text-left rounded-2xl border-l-4 border-l-violet-500 border-white/10 bg-[#0B1020]/75 hover:border-violet-400/40 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-950/30 transition-all duration-300">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/10 border border-violet-500/30 flex items-center justify-center shrink-0 shadow-inner">
+              <IndianRupee size={22} className="text-violet-300" />
             </div>
             <div>
-              <div style={{ fontSize: '0.74rem', fontWeight: 600, textTransform: 'uppercase', color: '#a5b4fc', letterSpacing: '0.06em' }}>
+              <div className="text-[0.72rem] font-bold uppercase tracking-wider text-violet-300">
                 Estimated Entry Fee
               </div>
-              <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff' }}>
+              <div className="text-2xl font-black text-white font-display tracking-tight">
                 ₹500 - ₹700
               </div>
-              <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+              <div className="text-xs text-slate-400">
                 *According to the strength of attendees, fee may vary.
               </div>
             </div>
@@ -196,15 +137,10 @@ export default function Hero({ onScrollToForm }) {
         {/* Scroll CTA button */}
         <button
           onClick={onScrollToForm}
-          className="btn btn-primary"
-          style={{
-            padding: '0.95rem 2.2rem',
-            fontSize: '1rem',
-            borderRadius: '999px',
-          }}
+          className="btn btn-primary px-8 py-3.5 text-base rounded-full font-bold shadow-xl shadow-violet-600/30 hover:shadow-violet-600/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group inline-flex items-center gap-2"
         >
           <span>Fill Out Registration Form</span>
-          <ArrowDown size={18} />
+          <ArrowDown size={18} className="transition-transform duration-200 group-hover:translate-y-0.5" />
         </button>
 
       </div>

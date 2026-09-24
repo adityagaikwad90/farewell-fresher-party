@@ -3,63 +3,26 @@ import { GraduationCap, Sparkles } from 'lucide-react';
 
 export default function Navbar({ onLogoClick }) {
   return (
-    <header
-      style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        backgroundColor: 'rgba(11, 15, 25, 0.85)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-        padding: '0.9rem 1.5rem',
-      }}
-    >
-      <div
-        style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '1rem',
-        }}
-      >
+    <header className="sticky top-0 z-50 bg-[#070A13]/75 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/30 transition-all duration-300 py-3.5 px-4 md:px-6">
+      <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4">
         {/* Brand / Logo */}
         <div
           onClick={onLogoClick}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            cursor: 'pointer',
-          }}
+          className="group flex items-center gap-3 cursor-pointer select-none transition-transform duration-200 hover:scale-[1.01]"
         >
-          <div
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, #4f46e5 0%, #3730a3 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 10px rgba(79, 70, 229, 0.3)',
-            }}
-          >
-            <GraduationCap size={22} color="#ffffff" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-600 flex items-center justify-center shadow-md shadow-violet-600/30 group-hover:shadow-violet-600/50 group-hover:scale-105 transition-all duration-300 border border-white/20">
+            <GraduationCap size={22} color="#ffffff" className="transition-transform duration-300 group-hover:rotate-6" />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <span style={{ fontWeight: 800, fontSize: '1.05rem', letterSpacing: '-0.02em', color: '#ffffff' }}>
+            <div className="flex items-center gap-2">
+              <span className="font-extrabold text-[1.1rem] tracking-tight text-white group-hover:text-violet-200 transition-colors duration-200 font-display">
                 MCA FEST 2026
               </span>
-              <span className="badge badge-purple" style={{ padding: '0.15rem 0.45rem', fontSize: '0.7rem' }}>
-                <Sparkles size={11} /> Fresher &amp; Farewell
+              <span className="badge badge-purple py-0.5 px-2 text-[0.7rem] shadow-sm">
+                <Sparkles size={11} className="text-violet-300" /> Fresher &amp; Farewell
               </span>
             </div>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+            <p className="text-xs text-slate-400 font-medium tracking-wide">
               Two Batches • One Celebration
             </p>
           </div>

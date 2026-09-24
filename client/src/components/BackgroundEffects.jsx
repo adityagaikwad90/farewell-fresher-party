@@ -20,20 +20,20 @@ export default function BackgroundEffects() {
 
     window.addEventListener('resize', handleResize);
 
-    // Subtle, calm particle system
-    const particleCount = 28;
+    // Subtle, elegant particle system matching the event theme
+    const particleCount = 32;
     const particles = [];
-    const colors = ['#94a3b8', '#818cf8', '#cbd5e1', '#a5b4fc'];
+    const colors = ['#7C3AED', '#06B6D4', '#F472B6', '#FBBF24', '#A78BFA', '#CBD5E1'];
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 1.5 + 0.5,
+        radius: Math.random() * 1.6 + 0.6,
         color: colors[Math.floor(Math.random() * colors.length)],
-        vx: (Math.random() - 0.5) * 0.2,
-        vy: -Math.random() * 0.35 - 0.1, // very slow gentle float
-        alpha: Math.random() * 0.35 + 0.1,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: -Math.random() * 0.35 - 0.1, // gentle slow upward float
+        alpha: Math.random() * 0.4 + 0.15,
         pulseSpeed: Math.random() * 0.015 + 0.005,
         angle: Math.random() * Math.PI * 2
       });
@@ -54,7 +54,7 @@ export default function BackgroundEffects() {
         if (p.x < -10) p.x = width + 10;
         if (p.x > width + 10) p.x = -10;
 
-        const dynamicAlpha = Math.max(0.08, p.alpha + Math.sin(p.angle) * 0.12);
+        const dynamicAlpha = Math.max(0.08, p.alpha + Math.sin(p.angle) * 0.15);
 
         ctx.save();
         ctx.beginPath();
@@ -77,34 +77,51 @@ export default function BackgroundEffects() {
   }, []);
 
   return (
-    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
-      {/* Soft, Simple Toned Ambient Light */}
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#070A13]">
+      {/* Subtle modern dot-grid texture for depth */}
       <div
+        className="absolute inset-0 opacity-[0.18]"
         style={{
-          position: 'absolute',
-          top: '-10%',
-          left: '25%',
-          width: '50vw',
-          height: '40vw',
-          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(79, 70, 229, 0.02) 50%, transparent 70%)',
-          filter: 'blur(90px)',
-          borderRadius: '50%',
+          backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
         }}
       />
+
+      {/* Atmospheric radial gradient blobs */}
+      {/* Top Center-Left: Energetic Violet / Purple glow */}
       <div
+        className="absolute -top-[10%] left-[15%] w-[55vw] h-[45vw] max-w-[800px] max-h-[600px] rounded-full filter blur-[100px] opacity-70 animate-pulse-glow"
         style={{
-          position: 'absolute',
-          bottom: '10%',
-          right: '5%',
-          width: '40vw',
-          height: '40vw',
-          background: 'radial-gradient(circle, rgba(56, 189, 248, 0.04) 0%, transparent 65%)',
-          filter: 'blur(100px)',
-          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.16) 0%, rgba(91, 33, 182, 0.05) 50%, transparent 70%)',
         }}
       />
-      {/* Subtle Particle Canvas */}
-      <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+
+      {/* Top Right: Energetic Pink / Fuchsia glow */}
+      <div
+        className="absolute top-[5%] -right-[5%] w-[45vw] h-[40vw] max-w-[650px] max-h-[550px] rounded-full filter blur-[95px] opacity-60"
+        style={{
+          background: 'radial-gradient(circle, rgba(244, 114, 182, 0.12) 0%, rgba(192, 38, 211, 0.04) 50%, transparent 70%)',
+        }}
+      />
+
+      {/* Mid Left: Freshers Cyan glow */}
+      <div
+        className="absolute top-[40%] -left-[10%] w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] rounded-full filter blur-[110px] opacity-50"
+        style={{
+          background: 'radial-gradient(circle, rgba(6, 182, 212, 0.10) 0%, transparent 65%)',
+        }}
+      />
+
+      {/* Bottom Right: Farewell Warm Gold / Amber glow */}
+      <div
+        className="absolute bottom-[5%] right-[5%] w-[40vw] h-[40vw] max-w-[550px] max-h-[550px] rounded-full filter blur-[110px] opacity-50"
+        style={{
+          background: 'radial-gradient(circle, rgba(251, 191, 36, 0.08) 0%, transparent 65%)',
+        }}
+      />
+
+      {/* Floating subtle particle canvas */}
+      <canvas ref={canvasRef} className="w-full h-full relative z-10" />
     </div>
   );
 }

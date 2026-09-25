@@ -20,6 +20,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
     fullName: '',
     contact: '',
     email: '',
+    year: '',
     div: '',
     talent: '',
     otherTalent: '',
@@ -83,6 +84,9 @@ export default function RegistrationForm({ onSubmitSuccess }) {
       const error = validateField(field, formData[field]);
       if (error) newErrors[field] = error;
     });
+    if (!formData.year) {
+      newErrors.year = 'Please select your Academic Year (1st Year or 2nd Year).';
+    }
     if (!formData.div) {
       newErrors.div = 'Please select your Division (A or B).';
     }
@@ -208,9 +212,9 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                   </div>
                 </div>
                 <div>
-                  <div className="text-[0.7rem] sm:text-xs text-slate-400 uppercase font-bold tracking-wider">Division</div>
+                  <div className="text-[0.7rem] sm:text-xs text-slate-400 uppercase font-bold tracking-wider">Year &amp; Div</div>
                   <div className="text-base sm:text-lg font-bold text-white mt-1">
-                    Division {savedPass.div || 'A'}
+                    {savedPass.year || '1st Year'} • Div {savedPass.div || 'A'}
                   </div>
                 </div>
                 <div>
@@ -220,9 +224,9 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                   </div>
                 </div>
                 <div>
-                  <div className="text-[0.7rem] sm:text-xs text-slate-400 uppercase font-bold tracking-wider">Contact</div>
-                  <div className="text-sm sm:text-base font-semibold text-slate-200 mt-1 truncate">
-                    {savedPass.contact}
+                  <div className="text-[0.7rem] sm:text-xs text-slate-400 uppercase font-bold tracking-wider">Entry Fee</div>
+                  <div className="text-base sm:text-lg font-bold text-emerald-400 mt-1 font-display">
+                    ₹600
                   </div>
                 </div>
               </div>
@@ -262,10 +266,10 @@ export default function RegistrationForm({ onSubmitSuccess }) {
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-white mb-1 tracking-tight font-display">
-                MCA First Year Student Registration
+                MCA 1st &amp; 2nd Year Student Registration
               </h2>
               <p className="text-slate-400 text-xs sm:text-sm">
-                Fill in the details below to confirm your spot in the celebration event.
+                Fill in the details below to confirm your spot in the celebration event • Entry fee: <strong className="text-emerald-400 font-bold">₹600</strong>
               </p>
             </div>
             <div className="text-xs text-rose-400 font-semibold flex items-center gap-1">
@@ -296,6 +300,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
               <div className="mt-1 p-3 bg-black/30 rounded-xl flex items-center justify-between flex-wrap gap-2 text-xs sm:text-sm border border-white/5">
                 <span>Existing Pass ID: <strong className="text-violet-400">{conflictData.regNumber}</strong></span>
                 <span>Attendee: <strong className="text-white">{conflictData.fullName}</strong></span>
+                <span>Year: <strong className="text-amber-300">{conflictData.year || '1st Year'}</strong></span>
                 <span>Division: <strong className="text-cyan-400">{conflictData.div}</strong></span>
               </div>
             )}
@@ -374,6 +379,54 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                 aria-describedby={errors.email ? 'email-error' : undefined}
               />
               {errors.email && <p id="email-error" className="form-error">{errors.email}</p>}
+            </div>
+
+            {/* ACADEMIC YEAR */}
+            <div className="form-group">
+              <label className="form-label">
+                <span>ACADEMIC YEAR</span>
+                <span className="required-star">*</span>
+              </label>
+              <div className="division-grid">
+                {[
+                  { id: '1st Year', title: '1st Year', subtitle: 'Fresher Batch', icon: Sparkles },
+                  { id: '2nd Year', title: '2nd Year', subtitle: 'Senior / Outgoing Batch', icon: GraduationCap }
+                ].map((yr) => {
+                  const isSelected = formData.year === yr.id;
+                  const YrIcon = yr.icon;
+                  return (
+                    <div
+                      key={yr.id}
+                      onClick={() => handleChange('year', yr.id)}
+                      className={`division-option ${
+                        isSelected
+                          ? 'bg-violet-600/15 border-violet-500 shadow-lg shadow-violet-500/15 ring-1 ring-violet-500/40'
+                          : 'bg-[#070A13]/60 border-white/10 hover:border-white/20'
+                      } border cursor-pointer`}
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0 overflow-hidden">
+                        <div
+                          className={`w-[18px] h-[18px] rounded-full shrink-0 transition-all duration-200 ${
+                            isSelected
+                              ? 'border-[5px] border-violet-500 bg-[#070A13]'
+                              : 'border-2 border-white/25 bg-transparent'
+                          }`}
+                        />
+                        <div className="truncate">
+                          <span className={`font-bold text-sm sm:text-base block ${isSelected ? 'text-white' : 'text-slate-300'}`}>
+                            {yr.title}
+                          </span>
+                          <span className="text-[0.68rem] text-slate-400 font-medium block">
+                            {yr.subtitle}
+                          </span>
+                        </div>
+                      </div>
+                      <YrIcon size={18} className={isSelected ? 'text-violet-400 shrink-0' : 'text-slate-500 shrink-0'} />
+                    </div>
+                  );
+                })}
+              </div>
+              {errors.year && <p className="form-error mt-2">{errors.year}</p>}
             </div>
 
             {/* DIV */}
@@ -489,10 +542,10 @@ export default function RegistrationForm({ onSubmitSuccess }) {
               <span>Party Ideas &amp; Suggestions</span>
             </h3>
 
-            {/* What would you like to see at the Fresher Party? */}
+            {/* What would you like to see at the Fresher & Farewell Party? */}
             <div className="form-group">
               <label className="form-label" htmlFor="partyWishes">
-                <span>What would you like to see at the Fresher Party?</span>
+                <span>What would you like to see at the Fresher &amp; Farewell Party?</span>
               </label>
               <textarea
                 id="partyWishes"
@@ -511,7 +564,7 @@ export default function RegistrationForm({ onSubmitSuccess }) {
               <textarea
                 id="gameSuggestion"
                 className="form-textarea"
-                placeholder="e.g. Ramp Walk, Blindfold challenge, Musical chairs, Trivia quiz, Dumb charades..."
+                placeholder="e.g. Ramp Walk, Senior-Junior interactive games, Blindfold challenge, Musical chairs, Trivia quiz, Dumb charades..."
                 value={formData.gameSuggestion}
                 onChange={(e) => handleChange('gameSuggestion', e.target.value)}
               />

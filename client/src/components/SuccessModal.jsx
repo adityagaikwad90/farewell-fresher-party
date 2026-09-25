@@ -74,10 +74,23 @@ export default function SuccessModal({ data, onClose, onRegisterAnother }) {
           Registration Successful! 🎉
         </h2>
 
-        <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6 px-1">
+        <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-4 px-1">
           Thank you, <strong className="text-white font-bold">{data?.fullName || 'Student'}</strong>!
           Your registration for the <strong className="text-violet-300 font-bold">MCA Fresher &amp; Farewell Celebration 2026</strong> has been successfully recorded.
         </p>
+
+        {/* Quick summary badges */}
+        <div className="flex items-center justify-center gap-2 mb-6 flex-wrap">
+          <span className="badge badge-purple text-xs py-1 px-3">
+            🎓 {data?.year || '1st Year'}
+          </span>
+          <span className="badge badge-pink text-xs py-1 px-3">
+            Div {data?.div || 'A'}
+          </span>
+          <span className="badge badge-emerald text-xs py-1 px-3 font-bold">
+            Entry Fee: ₹600
+          </span>
+        </div>
 
         {/* WhatsApp Group Box */}
         <div className="p-4 sm:p-5 rounded-2xl bg-[#070A13]/80 border border-emerald-500/30 shadow-inner mb-6 text-left">

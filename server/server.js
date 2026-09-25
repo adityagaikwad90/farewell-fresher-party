@@ -60,6 +60,7 @@ app.post('/api/register', async (req, res) => {
       fullName,
       contact,
       email,
+      year,
       div,
       talent,
       otherTalent,
@@ -77,9 +78,14 @@ app.post('/api/register', async (req, res) => {
     if (!email || !email.trim()) {
       return res.status(400).json({ error: 'Email ID is required.' });
     }
+    if (!year || !['1st Year', '2nd Year', '1st', '2nd', 'First Year', 'Second Year'].includes(String(year).trim())) {
+      return res.status(400).json({ error: 'Academic Year (1st Year or 2nd Year) is required.' });
+    }
     if (!div || !['A', 'B'].includes(div.toUpperCase())) {
       return res.status(400).json({ error: 'Division (A or B) is required.' });
     }
+
+    const normalizedYear = (String(year).includes('2') || String(year).toLowerCase().includes('second')) ? '2nd Year' : '1st Year';
 
     // Check if user has already submitted a response (by email or contact number)
     const existing = await findExistingRegistration(email, contact);
@@ -93,6 +99,7 @@ app.post('/api/register', async (req, res) => {
           id: existing.id,
           regNumber: existing.regNumber,
           fullName: existing.fullName,
+          year: existing.year || '1st Year',
           div: existing.div,
           talent: existing.talent,
           createdAt: existing.createdAt
@@ -112,7 +119,9 @@ app.post('/api/register', async (req, res) => {
       fullName: fullName.trim(),
       contact: contact.trim(),
       email: email.trim().toLowerCase(),
+      year: normalizedYear,
       div: div.toUpperCase(),
+      fee: 600,
       talent: finalTalent,
       partyWishes: partyWishes ? partyWishes.trim() : '',
       gameSuggestion: gameSuggestion ? gameSuggestion.trim() : ''
@@ -144,6 +153,7 @@ app.get('/api/check-registration', async (req, res) => {
         existing: {
           regNumber: existing.regNumber,
           fullName: existing.fullName,
+          year: existing.year || '1st Year',
           div: existing.div,
           talent: existing.talent,
           createdAt: existing.createdAt
@@ -178,6 +188,11 @@ app.get('/api/stats', requireAdminAuth, async (req, res) => {
     const records = await getAllRegistrations();
     const total = records.length;
     
+    const yearStats = {
+      firstYear: records.filter(r => !r.year || r.year === '1st Year' || r.year === 'First Year').length,
+      secondYear: records.filter(r => r.year === '2nd Year' || r.year === 'Second Year').length
+    };
+
     const divStats = {
       A: records.filter(r => r.div === 'A').length,
       B: records.filter(r => r.div === 'B').length
@@ -203,11 +218,15 @@ app.get('/api/stats', requireAdminAuth, async (req, res) => {
     res.json({
       success: true,
       total,
+      yearStats,
       divStats,
       talentStats,
+      feePerPerson: 600,
+      totalFeePool: total * 600,
       estimatedFeePool: {
-        min: total * 500,
-        max: total * 700
+        min: total * 600,
+        max: total * 600,
+        exact: total * 600
       }
     });
   } catch (err) {
@@ -238,9 +257,11 @@ app.get('/api/export', requireAdminAuth, async (req, res) => {
       'Registration ID',
       'Pass ID',
       'Full Name',
+      'Academic Year',
+      'Division',
       'Contact',
       'Email ID',
-      'Division',
+      'Entry Fee (INR)',
       'Talent / Event',
       'Wishes for Party',
       'Game / Activity Suggestion',
@@ -257,9 +278,11 @@ app.get('/api/export', requireAdminAuth, async (req, res) => {
       escapeCsv(r.id),
       escapeCsv(r.regNumber || ''),
       escapeCsv(r.fullName),
+      escapeCsv(r.year || '1st Year'),
+      escapeCsv(r.div),
       escapeCsv(r.contact),
       escapeCsv(r.email),
-      escapeCsv(r.div),
+      escapeCsv(r.fee || 600),
       escapeCsv(r.talent),
       escapeCsv(r.partyWishes),
       escapeCsv(r.gameSuggestion),

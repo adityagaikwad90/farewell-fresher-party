@@ -27,6 +27,7 @@ export default function AdminPanel({ onBackToForm }) {
 
   // Filters & Search
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedYear, setSelectedYear] = useState('ALL');
   const [selectedDiv, setSelectedDiv] = useState('ALL');
   const [selectedTalent, setSelectedTalent] = useState('ALL');
 
@@ -139,6 +140,7 @@ export default function AdminPanel({ onBackToForm }) {
       (item.contact || '').includes(searchTerm) ||
       (item.regNumber || '').toLowerCase().includes(searchTerm.toLowerCase());
 
+    const matchesYear = selectedYear === 'ALL' || (item.year || '1st Year') === selectedYear;
     const matchesDiv = selectedDiv === 'ALL' || item.div === selectedDiv;
 
     let matchesTalent = true;
@@ -151,7 +153,7 @@ export default function AdminPanel({ onBackToForm }) {
       else if (selectedTalent === 'NONE') matchesTalent = !t || t === 'NONE';
     }
 
-    return matchesSearch && matchesDiv && matchesTalent;
+    return matchesSearch && matchesYear && matchesDiv && matchesTalent;
   });
 
   // If not authenticated, show passcode login screen
@@ -269,7 +271,7 @@ export default function AdminPanel({ onBackToForm }) {
 
         {/* Metric Overview Cards */}
         {stats && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-7">
             {/* Total Registrations */}
             <div className="glass-panel p-5 rounded-2xl bg-[#0B1020]/75 border-white/10 hover:border-violet-500/40 hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-black/30">
               <div className="flex items-center justify-between mb-2">
@@ -284,7 +286,48 @@ export default function AdminPanel({ onBackToForm }) {
                 {stats.total}
               </div>
               <div className="text-xs text-violet-300 mt-1 font-medium">
-                First-year MCA attendees
+                1st &amp; 2nd Year attendees
+              </div>
+            </div>
+
+            {/* Academic Year Breakdown */}
+            <div className="glass-panel p-5 rounded-2xl bg-[#0B1020]/75 border-white/10 hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-black/30">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[0.72rem] text-slate-400 font-bold uppercase tracking-wider">
+                  Batch Breakdown
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                  <Sparkles size={16} />
+                </div>
+              </div>
+              <div className="flex items-baseline gap-2.5">
+                <div>
+                  <span className="text-2xl font-black text-white font-display">
+                    {stats.yearStats?.firstYear ?? (stats.total - (stats.yearStats?.secondYear || 0))}
+                  </span>
+                  <span className="text-xs text-violet-300 ml-1 font-semibold">1st Yr</span>
+                </div>
+                <div className="text-white/20">|</div>
+                <div>
+                  <span className="text-2xl font-black text-white font-display">
+                    {stats.yearStats?.secondYear || 0}
+                  </span>
+                  <span className="text-xs text-amber-300 ml-1 font-semibold">2nd Yr</span>
+                </div>
+              </div>
+              <div className="h-1.5 bg-white/10 rounded-full mt-3 overflow-hidden flex">
+                <div
+                  style={{
+                    width: `${stats.total > 0 ? ((stats.yearStats?.firstYear ?? (stats.total - (stats.yearStats?.secondYear || 0))) / stats.total) * 100 : 50}%`
+                  }}
+                  className="bg-violet-500"
+                />
+                <div
+                  style={{
+                    width: `${stats.total > 0 ? ((stats.yearStats?.secondYear || 0) / stats.total) * 100 : 50}%`
+                  }}
+                  className="bg-amber-400"
+                />
               </div>
             </div>
 
@@ -333,21 +376,21 @@ export default function AdminPanel({ onBackToForm }) {
               </div>
             </div>
 
-            {/* Estimated Fee Pool */}
-            <div className="glass-panel p-5 rounded-2xl bg-[#0B1020]/75 border-white/10 hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-black/30">
+            {/* Fee Pool */}
+            <div className="glass-panel p-5 rounded-2xl bg-[#0B1020]/75 border-white/10 hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-black/30">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[0.72rem] text-slate-400 font-bold uppercase tracking-wider">
-                  Fee Pool Projection
+                  Fee Collection Pool
                 </span>
-                <div className="w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
                   <IndianRupee size={16} />
                 </div>
               </div>
-              <div className="text-2xl font-black text-amber-300 font-display">
-                ₹{stats.estimatedFeePool.min.toLocaleString()} - ₹{stats.estimatedFeePool.max.toLocaleString()}
+              <div className="text-2xl font-black text-emerald-400 font-display">
+                ₹{(stats.total * 600).toLocaleString()}
               </div>
               <div className="text-xs text-slate-400 mt-1 font-medium">
-                @ ₹500 - ₹700 per person
+                @ ₹600 per student (Exact Fee)
               </div>
             </div>
           </div>
@@ -356,7 +399,7 @@ export default function AdminPanel({ onBackToForm }) {
         {/* Filter & Search Bar */}
         <div className="glass-panel p-4 mb-5 flex items-center justify-between flex-wrap gap-3.5 rounded-2xl border-white/10 bg-[#0B1020]/75">
           {/* Search Box */}
-          <div className="relative flex-1 min-w-[260px] max-w-[420px]">
+          <div className="relative flex-1 min-w-[240px] max-w-[360px]">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
             <input
               type="text"
@@ -367,19 +410,36 @@ export default function AdminPanel({ onBackToForm }) {
             />
           </div>
 
+          {/* Academic Year Selector Tabs */}
+          <div className="flex items-center gap-1.5">
+            {['ALL', '1st Year', '2nd Year'].map(yrOpt => (
+              <button
+                key={yrOpt}
+                onClick={() => setSelectedYear(yrOpt)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                  selectedYear === yrOpt
+                    ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30 border border-amber-400'
+                    : 'bg-white/[0.04] text-slate-300 hover:bg-white/[0.08] border border-white/10'
+                }`}
+              >
+                {yrOpt === 'ALL' ? 'All Years' : yrOpt}
+              </button>
+            ))}
+          </div>
+
           {/* Division Selector Tabs */}
           <div className="flex items-center gap-1.5">
             {['ALL', 'A', 'B'].map(divOpt => (
               <button
                 key={divOpt}
                 onClick={() => setSelectedDiv(divOpt)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
                   selectedDiv === divOpt
                     ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30 border border-violet-500'
                     : 'bg-white/[0.04] text-slate-300 hover:bg-white/[0.08] border border-white/10'
                 }`}
               >
-                {divOpt === 'ALL' ? 'All Divisions' : `Div ${divOpt}`}
+                {divOpt === 'ALL' ? 'All Divs' : `Div ${divOpt}`}
               </button>
             ))}
           </div>
@@ -409,7 +469,9 @@ export default function AdminPanel({ onBackToForm }) {
               <tr className="border-b border-white/10 bg-white/[0.02]">
                 <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Pass ID</th>
                 <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Student Name</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Year</th>
                 <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Div</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Fee</th>
                 <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Contact Info</th>
                 <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Talent / Performance</th>
                 <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Party Suggestions</th>
@@ -420,7 +482,7 @@ export default function AdminPanel({ onBackToForm }) {
             <tbody>
               {filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="p-12 text-center text-slate-400">
+                  <td colSpan={10} className="p-12 text-center text-slate-400">
                     No registration records found.
                   </td>
                 </tr>
@@ -437,8 +499,18 @@ export default function AdminPanel({ onBackToForm }) {
                       <div className="font-bold text-white">{item.fullName}</div>
                     </td>
                     <td className="p-3.5">
+                      <span className={`badge ${(item.year || '1st Year').includes('1') ? 'badge-purple' : 'badge-amber'}`}>
+                        {item.year || '1st Year'}
+                      </span>
+                    </td>
+                    <td className="p-3.5">
                       <span className={`badge ${item.div === 'A' ? 'badge-purple' : 'badge-pink'}`}>
                         Div {item.div}
+                      </span>
+                    </td>
+                    <td className="p-3.5">
+                      <span className="font-semibold text-emerald-400">
+                        ₹{item.fee || 600}
                       </span>
                     </td>
                     <td className="p-3.5">
@@ -501,9 +573,14 @@ export default function AdminPanel({ onBackToForm }) {
                     {selectedItem.regNumber || selectedItem.id}
                   </span>
                 </div>
-                <span className={`badge ${selectedItem.div === 'A' ? 'badge-purple' : 'badge-pink'}`}>
-                  Division {selectedItem.div}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className={`badge ${(selectedItem.year || '1st Year').includes('1') ? 'badge-purple' : 'badge-amber'}`}>
+                    {selectedItem.year || '1st Year'}
+                  </span>
+                  <span className={`badge ${selectedItem.div === 'A' ? 'badge-purple' : 'badge-pink'}`}>
+                    Division {selectedItem.div}
+                  </span>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4 mb-5">
@@ -515,6 +592,14 @@ export default function AdminPanel({ onBackToForm }) {
                   <div className="text-[0.7rem] text-slate-400 font-bold uppercase tracking-wider">EMAIL ADDRESS</div>
                   <div className="text-white font-semibold mt-0.5 truncate">{selectedItem.email}</div>
                 </div>
+                <div>
+                  <div className="text-[0.7rem] text-slate-400 font-bold uppercase tracking-wider">ACADEMIC YEAR</div>
+                  <div className="text-amber-300 font-bold mt-0.5">{selectedItem.year || '1st Year'}</div>
+                </div>
+                <div>
+                  <div className="text-[0.7rem] text-slate-400 font-bold uppercase tracking-wider">ENTRY FEE</div>
+                  <div className="text-emerald-400 font-bold mt-0.5">₹{selectedItem.fee || 600}</div>
+                </div>
                 <div className="col-span-2">
                   <div className="text-[0.7rem] text-slate-400 font-bold uppercase tracking-wider">TALENT &amp; EVENT PARTICIPATION</div>
                   <div className="text-amber-300 font-bold mt-0.5">
@@ -525,7 +610,7 @@ export default function AdminPanel({ onBackToForm }) {
 
               <div className="mb-4 bg-white/[0.03] border border-white/5 p-4 rounded-xl">
                 <div className="text-xs text-violet-400 font-bold mb-1">
-                  What would you like to see at the Fresher Party?
+                  What would you like to see at the Fresher &amp; Farewell Party?
                 </div>
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">
                   {selectedItem.partyWishes || <em className="text-slate-500">No response provided.</em>}

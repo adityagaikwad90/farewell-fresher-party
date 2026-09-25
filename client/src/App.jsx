@@ -170,7 +170,7 @@ export default function App() {
           </div>
 
           <p className="text-xs sm:text-sm text-slate-400 m-0">
-            Organized with <Heart size={14} className="inline text-rose-500 fill-rose-500 align-middle mx-1" /> by MCA 2nd Year Students for our juniors and outgoing seniors.
+            Organized with <Heart size={14} className="inline text-rose-500 fill-rose-500 align-middle mx-1" /> for MCA 1st &amp; 2nd Year Students • Two Batches, One Celebration.
           </p>
 
           <div className="flex items-center justify-center flex-wrap gap-2.5 pt-2">

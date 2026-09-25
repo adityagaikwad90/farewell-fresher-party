@@ -10,17 +10,19 @@ Built with **React**, **Node.js + Express**, and **Firebase** (with built-in loc
 
 - **Celebration Hero & Invitation**:
   - Grand festive visual theme with aurora glowing gradients and interactive particle canvas.
-  - Heartwarming welcome letter from MCA 2nd Year seniors to 1st Year juniors.
+  - Heartwarming welcome letter uniting MCA 1st Year juniors and 2nd Year seniors.
   - Slogan banner: *"🔥 One Department. Two Batches. One Celebration. Countless Memories. 🔥"*
-  - Dynamic estimated entry fee card: **₹500 - ₹700** (varying with attendance).
+  - Fixed entry fee card: **₹600** (exact amount per student).
   - Direct pulse-animated **WhatsApp Community button** with instant invite link.
-- **Registration Form (100% matched to Google Form)**:
+- **Registration Form**:
   - Full Name (required)
   - Contact Number (with phone validation)
   - Email ID (with format validation)
+  - Academic Year (Interactive selection for 1st Year & 2nd Year)
   - Division (Interactive selection for Division A & B)
+  - Fixed Entry Fee: ₹600
   - Talent & Event Registration (Singing 🎤, Dancing 💃, Stand Up Comedy 🎭, or custom Other performance)
-  - "What would you like to see at the Fresher Party?"
+  - "What would you like to see at the Fresher & Farewell Party?"
   - "Suggest a fun activity/game for the party."
   - Embedded WhatsApp group prompt
   - Clear Form & Submit buttons

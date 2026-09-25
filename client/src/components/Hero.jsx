@@ -87,21 +87,21 @@ export default function Hero({ onScrollToForm }) {
               🎓
             </div>
             <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight font-display">
-              Dear MCA First Year Students,
+              Dear MCA 1st &amp; 2nd Year Students,
             </h3>
           </div>
 
           <p className="text-slate-300 text-[0.95rem] sm:text-base leading-relaxed mb-4">
-            A new journey has begun for you, and we, the <strong className="text-violet-300 font-bold">MCA 2nd Year students</strong>, are excited to welcome you to the MCA family! 🎓❤️
+            A grand milestone brings our department together! To our <strong className="text-violet-300 font-bold">MCA 1st Year juniors</strong>, a warm and enthusiastic welcome to the MCA family! 🎓❤️
           </p>
           <p className="text-slate-300 text-[0.95rem] sm:text-base leading-relaxed mb-4">
-            At the same time, we are also celebrating the journey, memories, friendships, and achievements of our <strong className="text-amber-300 font-bold">MCA 2nd Year outgoing students</strong> as they take their next step toward a new chapter. 🌟
+            At the same time, we celebrate the remarkable journey, accomplishments, and cherished bonds of our <strong className="text-amber-300 font-bold">MCA 2nd Year seniors</strong> as they get ready for their next big chapter in life! 🌟
           </p>
           <p className="text-slate-300 text-[0.95rem] sm:text-base leading-relaxed mb-5">
-            So, this year, we are bringing everyone together for one special celebration — <strong className="bg-gradient-to-r from-violet-300 via-fuchsia-300 to-amber-300 bg-clip-text text-transparent font-extrabold">FRESHER + FAREWELL 2026! 🥳</strong>
+            So, this year, we are uniting both batches for one monumental celebration — <strong className="bg-gradient-to-r from-violet-300 via-fuchsia-300 to-amber-300 bg-clip-text text-transparent font-extrabold">FRESHER + FAREWELL 2026! 🥳</strong>
           </p>
           <p className="text-slate-400 text-sm sm:text-[0.94rem] leading-relaxed mb-6">
-            This portal is specially created for MCA First Year students to collect your basic information and know your interests, preferences, and participation for the event. This is not just another college event. It is a chance to <strong className="text-slate-200 font-semibold">meet new people, celebrate friendships, appreciate our seniors</strong>, and create memories that we'll carry with us long after college. ❤️
+            This registration portal is specially created for <strong className="text-slate-200 font-semibold">both MCA First Year and Second Year students</strong> to confirm your presence, select your performance interests, and share your thoughts to make this celebration truly extraordinary. Let's <strong className="text-slate-200 font-semibold">celebrate friendships, honor our seniors, welcome our juniors</strong>, and make memories that will stay with us forever! ❤️
           </p>
 
           {/* Slogan Banner */}
@@ -122,13 +122,13 @@ export default function Hero({ onScrollToForm }) {
             </div>
             <div>
               <div className="text-[0.72rem] font-bold uppercase tracking-wider text-violet-300">
-                Estimated Entry Fee
+                Registration / Entry Fee
               </div>
               <div className="text-2xl font-black text-white font-display tracking-tight">
-                ₹500 - ₹700
+                ₹600
               </div>
               <div className="text-xs text-slate-400">
-                *According to the strength of attendees, fee may vary.
+                Entry fee per student (1st &amp; 2nd Year)
               </div>
             </div>
           </div>

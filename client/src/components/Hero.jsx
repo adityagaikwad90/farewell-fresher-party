@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, ArrowDown, IndianRupee, Clock } from 'lucide-react';
 
 export default function Hero({ onScrollToForm }) {
-  // Target celebratory date: October 2, 2026 at 10:00 AM (Approx 1st - 2nd October)
+  // Target celebratory date: October 2, 2026 at 10:00 AM
   const calculateTimeLeft = () => {
     const currentYear = new Date().getFullYear();
     const targetDate = new Date(currentYear, 9, 2, 10, 0, 0); // Month 9 is October (0-indexed)
@@ -52,7 +52,7 @@ export default function Hero({ onScrollToForm }) {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-slate-300 text-xs font-semibold uppercase tracking-wider mb-4 shadow-sm backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             <Clock size={14} className="text-slate-400" />
-            <span>Countdown to Celebration • 1st – 2nd October 2026</span>
+            <span>Countdown to Celebration • 2nd October 2026</span>
           </div>
 
           <div className="flex items-center justify-center gap-2.5 sm:gap-3.5 flex-wrap">

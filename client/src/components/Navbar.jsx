@@ -1,9 +1,9 @@
 import React from 'react';
 import { GraduationCap, Sparkles } from 'lucide-react';
 
-export default function Navbar({ onLogoClick }) {
+export default function Navbar({ onLogoClick, onWorkflowClick, onRegisterClick }) {
   return (
-    <header className="sticky top-0 z-50 bg-[#070A13]/75 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/30 transition-all duration-300 py-3.5 px-4 md:px-6">
+    <header className="sticky top-0 z-50 bg-[#070A13]/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/30 transition-all duration-300 py-3.5 px-4 md:px-6">
       <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4">
         {/* Brand / Logo */}
         <div
@@ -26,6 +26,16 @@ export default function Navbar({ onLogoClick }) {
               Two Batches • One Celebration
             </p>
           </div>
+        </div>
+
+        {/* Quick Nav Anchors */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            onClick={onWorkflowClick}
+            className="px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-violet-400/40 transition-all duration-200"
+          >
+            ✨ Event Flow
+          </button>
         </div>
       </div>
     </header>

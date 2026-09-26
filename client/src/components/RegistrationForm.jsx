@@ -11,7 +11,8 @@ import {
   RotateCcw,
   Send,
   ShieldCheck,
-  Ticket
+  Ticket,
+  Crown
 } from 'lucide-react';
 import { API_BASE } from '../config';
 
@@ -47,8 +48,9 @@ export default function RegistrationForm({ onSubmitSuccess }) {
   const talents = [
     { id: 'SINGING', label: 'Singing', icon: Mic, color: '#A78BFA', bgClass: 'from-violet-500/20 to-purple-500/10' },
     { id: 'DANCING', label: 'Dancing', icon: Music, color: '#F472B6', bgClass: 'from-pink-500/20 to-fuchsia-500/10' },
-    { id: 'STAND UP COMEDY', label: 'Stand Up Comedy', icon: Laugh, color: '#FBBF24', bgClass: 'from-amber-500/20 to-yellow-500/10' },
-    { id: 'Other', label: 'Other Talent', icon: Sparkles, color: '#38BDF8', bgClass: 'from-cyan-500/20 to-blue-500/10' }
+    { id: 'RAMP WALK', label: 'Ramp Walk / Mr & Miss Fresher', icon: Crown, color: '#F59E0B', bgClass: 'from-amber-500/20 to-yellow-500/10' },
+    { id: 'STAND UP COMEDY', label: 'Stand Up Comedy', icon: Laugh, color: '#10B981', bgClass: 'from-emerald-500/20 to-teal-500/10' },
+    { id: 'Other', label: 'Other Talent / Act', icon: Sparkles, color: '#38BDF8', bgClass: 'from-cyan-500/20 to-blue-500/10' }
   ];
 
   const validateField = (field, value) => {
@@ -265,11 +267,14 @@ export default function RegistrationForm({ onSubmitSuccess }) {
         <div className="glass-panel form-panel border-t-[3px] border-t-violet-500 rounded-3xl bg-[#0B1020]/80 shadow-2xl shadow-black/40">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/15 border border-violet-500/30 text-violet-300 text-xs font-bold uppercase tracking-wider mb-2">
+                <span>⏰ 12:00 PM – 6:00 PM • Complete Celebration Experience</span>
+              </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-white mb-1 tracking-tight font-display">
                 MCA 1st &amp; 2nd Year Student Registration
               </h2>
               <p className="text-slate-400 text-xs sm:text-sm">
-                Fill in the details below to confirm your spot in the celebration event • Entry fee: <strong className="text-emerald-400 font-bold">₹600</strong>
+                Confirm your spot • Entry fee: <strong className="text-emerald-400 font-bold">₹600</strong> (Includes welcome drinks, starters, lunch, DJ &amp; activities)
               </p>
             </div>
             <div className="text-xs text-rose-400 font-semibold flex items-center gap-1">

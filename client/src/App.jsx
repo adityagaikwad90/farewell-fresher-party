@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import EventWorkflow from './components/EventWorkflow';
 import RegistrationForm from './components/RegistrationForm';
 import SuccessModal from './components/SuccessModal';
 import AdminPanel from './components/AdminPanel';
@@ -40,9 +41,32 @@ export default function App() {
   };
 
   const handleScrollToForm = () => {
-    const el = document.getElementById('registration-form');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+    if (currentView !== 'register') {
+      setCurrentView('register');
+      setTimeout(() => {
+        const el = document.getElementById('registration-form');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.getElementById('registration-form');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  const handleScrollToWorkflow = () => {
+    if (currentView !== 'register') {
+      setCurrentView('register');
+      setTimeout(() => {
+        const el = document.getElementById('workflow');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.getElementById('workflow');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -55,18 +79,26 @@ export default function App() {
       {/* Background Particle and Aurora Lights */}
       <BackgroundEffects />
 
-      {/* Navigation Bar (With @mca_buzz Instagram follow link) */}
-      <Navbar onLogoClick={navigateToRegister} />
+      {/* Navigation Bar (With Event Flow & Register Quick Links) */}
+      <Navbar
+        onLogoClick={navigateToRegister}
+        onWorkflowClick={handleScrollToWorkflow}
+        onRegisterClick={handleScrollToForm}
+      />
 
       {/* Main Page View */}
       <main className="flex-1 relative z-10">
         {currentView === 'register' ? (
           <>
-            <Hero onScrollToForm={handleScrollToForm} />
+            <Hero
+              onScrollToForm={handleScrollToForm}
+              onScrollToWorkflow={handleScrollToWorkflow}
+            />
             <RegistrationForm onSubmitSuccess={handleSuccess} />
+            <EventWorkflow />
 
             {/* Official Community & Socials */}
-            <section className="px-4 sm:px-6 pb-16 relative z-10">
+            <section id="community" className="px-4 sm:px-6 pb-16 relative z-10">
               <div className="max-w-[850px] mx-auto">
                 <div className="text-center mb-6">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-slate-300 text-xs font-bold uppercase tracking-wider mb-2">

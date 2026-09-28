@@ -7,7 +7,7 @@ import SuccessModal from './components/SuccessModal';
 import AdminPanel from './components/AdminPanel';
 import BackgroundEffects from './components/BackgroundEffects';
 import { Heart, MessageCircle, Instagram, Sparkles, MapPin } from 'lucide-react';
-import { INSTAGRAM_URL, WHATSAPP_GROUP_URL, VENUE_NAME, VENUE_MAPS_URL } from './config';
+import { INSTAGRAM_URL, WHATSAPP_GROUP_URL, VENUE_NAME, VENUE_MAPS_URL, PAYMENT_FORM_URL } from './config';
 
 export default function App() {
   // Direct route detection from URL (e.g. /admin or #admin)
@@ -78,6 +78,26 @@ export default function App() {
     <div className="relative min-h-screen flex flex-col bg-[#070A13] text-[#F8FAFC] selection:bg-violet-600 selection:text-white">
       {/* Background Particle and Aurora Lights */}
       <BackgroundEffects />
+
+      {/* Top Flash Announcement Ticker Bar */}
+      <div className="bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 text-white text-xs sm:text-[0.82rem] font-bold py-2 px-3 sm:px-4 shadow-md relative z-50 text-center flex items-center justify-center flex-wrap gap-2">
+        <span className="inline-flex items-center gap-1.5 bg-black/25 px-2.5 py-0.5 rounded-full text-[0.7rem] uppercase tracking-wider font-extrabold text-amber-200 border border-white/20">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-300 animate-ping" />
+          Limited Seats Available!
+        </span>
+        <span>Passes are generated &amp; sent over your mail!</span>
+        <span className="hidden md:inline">•</span>
+        <span className="text-amber-100">For payment confirmation, fill Google Form:</span>
+        <a
+          href={PAYMENT_FORM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 bg-white text-slate-900 px-2.5 py-0.5 rounded-full text-[0.72rem] font-black hover:bg-amber-100 transition-colors shadow-sm ml-1"
+        >
+          <span>Fill Form</span>
+          <span>↗</span>
+        </a>
+      </div>
 
       {/* Navigation Bar (With Event Flow & Register Quick Links) */}
       <Navbar

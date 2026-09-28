@@ -6,8 +6,8 @@ import RegistrationForm from './components/RegistrationForm';
 import SuccessModal from './components/SuccessModal';
 import AdminPanel from './components/AdminPanel';
 import BackgroundEffects from './components/BackgroundEffects';
-import { Heart, MessageCircle, Instagram, Sparkles } from 'lucide-react';
-import { INSTAGRAM_URL, WHATSAPP_GROUP_URL } from './config';
+import { Heart, MessageCircle, Instagram, Sparkles, MapPin } from 'lucide-react';
+import { INSTAGRAM_URL, WHATSAPP_GROUP_URL, VENUE_NAME, VENUE_MAPS_URL } from './config';
 
 export default function App() {
   // Direct route detection from URL (e.g. /admin or #admin)
@@ -106,13 +106,13 @@ export default function App() {
                     <span>Stay Connected &amp; Follow Updates</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-black text-white font-display">
-                    Official Community &amp; Socials
+                    Official Community &amp; Venue
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* WhatsApp Community Card */}
-                  <div className="glass-panel p-5 sm:p-6 rounded-3xl border border-emerald-500/30 bg-[#0B1020]/80 shadow-[0_10px_35px_rgba(0,0,0,0.5),0_0_25px_rgba(16,185,129,0.1)] hover:border-emerald-500/50 hover:shadow-[0_15px_45px_rgba(0,0,0,0.6),0_0_35px_rgba(16,185,129,0.18)] transition-all duration-300 flex flex-col justify-between">
+                  <div className="glass-panel p-5 rounded-3xl border border-emerald-500/30 bg-[#0B1020]/80 shadow-[0_10px_35px_rgba(0,0,0,0.5),0_0_25px_rgba(16,185,129,0.1)] hover:border-emerald-500/50 hover:shadow-[0_15px_45px_rgba(0,0,0,0.6),0_0_35px_rgba(16,185,129,0.18)] transition-all duration-300 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center gap-3.5 mb-3">
                         <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-600/30 border border-white/20">
@@ -122,13 +122,13 @@ export default function App() {
                           <div className="text-[0.72rem] font-bold uppercase tracking-wider text-emerald-400">
                             Instant Updates
                           </div>
-                          <h4 className="text-lg font-extrabold text-white font-display">
+                          <h4 className="text-base sm:text-lg font-extrabold text-white font-display">
                             WhatsApp Community
                           </h4>
                         </div>
                       </div>
                       <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-5">
-                        Get live announcements on event venue, party timings, theme dress code, and performance schedule!
+                        Get live announcements for <strong className="text-white font-semibold">{VENUE_NAME}</strong>, party timings, theme dress code &amp; schedules!
                       </p>
                     </div>
 
@@ -136,15 +136,47 @@ export default function App() {
                       href={WHATSAPP_GROUP_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn btn-whatsapp w-full py-3.5 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-emerald-600/30 hover:shadow-emerald-600/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 inline-flex items-center justify-center gap-2"
+                      className="btn btn-whatsapp w-full py-3 text-xs sm:text-sm font-bold rounded-xl shadow-lg shadow-emerald-600/30 hover:shadow-emerald-600/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 inline-flex items-center justify-center gap-2"
                     >
-                      <MessageCircle size={19} />
+                      <MessageCircle size={18} />
                       <span>Join WhatsApp Group</span>
                     </a>
                   </div>
 
+                  {/* Venue Location Card */}
+                  <div className="glass-panel p-5 rounded-3xl border border-violet-500/30 bg-[#0B1020]/80 shadow-[0_10px_35px_rgba(0,0,0,0.5),0_0_25px_rgba(124,58,237,0.1)] hover:border-violet-500/50 hover:shadow-[0_15px_45px_rgba(0,0,0,0.6),0_0_35px_rgba(124,58,237,0.18)] transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-3.5 mb-3">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-violet-600/30 border border-white/20">
+                          <MapPin size={24} color="#ffffff" />
+                        </div>
+                        <div>
+                          <div className="text-[0.72rem] font-bold uppercase tracking-wider text-violet-400">
+                            Party Destination
+                          </div>
+                          <h4 className="text-base sm:text-lg font-extrabold text-white font-display truncate">
+                            {VENUE_NAME}
+                          </h4>
+                        </div>
+                      </div>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-5">
+                        Experience our grand celebration at Shankra Banquet Hall with delicious catering &amp; DJ stage!
+                      </p>
+                    </div>
+
+                    <a
+                      href={VENUE_MAPS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-primary w-full py-3 text-xs sm:text-sm font-bold rounded-xl shadow-lg shadow-violet-600/30 hover:shadow-violet-600/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 inline-flex items-center justify-center gap-2 text-white"
+                    >
+                      <MapPin size={18} />
+                      <span>Get Maps Directions</span>
+                    </a>
+                  </div>
+
                   {/* Instagram Card */}
-                  <div className="glass-panel p-5 sm:p-6 rounded-3xl border border-pink-500/30 bg-[#0B1020]/80 shadow-[0_10px_35px_rgba(0,0,0,0.5),0_0_25px_rgba(236,72,153,0.1)] hover:border-pink-500/50 hover:shadow-[0_15px_45px_rgba(0,0,0,0.6),0_0_35px_rgba(236,72,153,0.18)] transition-all duration-300 flex flex-col justify-between">
+                  <div className="glass-panel p-5 rounded-3xl border border-pink-500/30 bg-[#0B1020]/80 shadow-[0_10px_35px_rgba(0,0,0,0.5),0_0_25px_rgba(236,72,153,0.1)] hover:border-pink-500/50 hover:shadow-[0_15px_45px_rgba(0,0,0,0.6),0_0_35px_rgba(236,72,153,0.18)] transition-all duration-300 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center gap-3.5 mb-3">
                         <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] flex items-center justify-center shrink-0 shadow-lg shadow-pink-600/30 border border-white/20">
@@ -154,13 +186,13 @@ export default function App() {
                           <div className="text-[0.72rem] font-bold uppercase tracking-wider text-pink-400">
                             Official Page
                           </div>
-                          <h4 className="text-lg font-extrabold text-white font-display">
+                          <h4 className="text-base sm:text-lg font-extrabold text-white font-display">
                             Follow @mca_buzz
                           </h4>
                         </div>
                       </div>
                       <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-5">
-                        Catch exclusive event teasers, student reels, behind-the-scenes glimpses, and celebration photo drops!
+                        Catch exclusive event teasers, student reels, behind-the-scenes glimpses &amp; photo drops!
                       </p>
                     </div>
 
@@ -168,10 +200,10 @@ export default function App() {
                       href={INSTAGRAM_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn btn-instagram w-full py-3.5 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-pink-600/30 hover:shadow-pink-600/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 inline-flex items-center justify-center gap-2 text-white"
+                      className="btn btn-instagram w-full py-3 text-xs sm:text-sm font-bold rounded-xl shadow-lg shadow-pink-600/30 hover:shadow-pink-600/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 inline-flex items-center justify-center gap-2 text-white"
                     >
-                      <Instagram size={19} />
-                      <span>Follow @mca_buzz on Instagram</span>
+                      <Instagram size={18} />
+                      <span>Follow @mca_buzz</span>
                     </a>
                   </div>
                 </div>

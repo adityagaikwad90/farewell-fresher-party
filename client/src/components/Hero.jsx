@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, ArrowDown, IndianRupee, Clock } from 'lucide-react';
+import { Sparkles, ArrowDown, IndianRupee, Clock, MapPin } from 'lucide-react';
+import { VENUE_NAME, VENUE_MAPS_URL } from '../config';
 
 export default function Hero({ onScrollToForm, onScrollToWorkflow }) {
   // Target celebratory date: October 2, 2026 at 12:00 PM
@@ -59,6 +60,17 @@ export default function Hero({ onScrollToForm, onScrollToWorkflow }) {
 
         {/* Quick Highlights Strip */}
         <div className="flex items-center justify-center gap-2.5 sm:gap-4 flex-wrap mb-7">
+          <a
+            href={VENUE_MAPS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-500/20 hover:bg-violet-500/35 border border-violet-400/40 text-violet-200 hover:text-white text-xs sm:text-sm font-bold shadow-md shadow-violet-600/20 backdrop-blur-md transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
+            title="Click to view Shankra Banquet Hall on Google Maps"
+          >
+            <MapPin size={15} className="text-violet-400" />
+            <span>📍 {VENUE_NAME}</span>
+          </a>
+
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-slate-200 text-xs sm:text-sm font-semibold shadow-sm backdrop-blur-md">
             <Clock size={15} className="text-cyan-400" />
             <span>⏰ 12:00 PM – 6:00 PM</span>

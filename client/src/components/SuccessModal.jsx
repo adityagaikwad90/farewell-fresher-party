@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { CheckCircle2, MessageCircle, X, Sparkles } from 'lucide-react';
-import { WHATSAPP_GROUP_URL } from '../config';
+import { CheckCircle2, MessageCircle, X, Sparkles, MapPin, ExternalLink } from 'lucide-react';
+import { WHATSAPP_GROUP_URL, VENUE_NAME, VENUE_MAPS_URL } from '../config';
 
 export default function SuccessModal({ data, onClose, onRegisterAnother }) {
   useEffect(() => {
@@ -80,7 +80,18 @@ export default function SuccessModal({ data, onClose, onRegisterAnother }) {
         </p>
 
         {/* Quick summary badges */}
-        <div className="flex items-center justify-center gap-2 mb-6 flex-wrap">
+        <div className="flex items-center justify-center gap-2 mb-5 flex-wrap">
+          <a
+            href={VENUE_MAPS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="badge badge-purple text-xs py-1 px-3 hover:scale-105 transition-transform inline-flex items-center gap-1 text-violet-200"
+            title="Open Shankra Banquet Hall on Google Maps"
+          >
+            <MapPin size={12} className="text-violet-400" />
+            <span>📍 {VENUE_NAME}</span>
+            <ExternalLink size={10} />
+          </a>
           <span className="badge badge-purple text-xs py-1 px-3">
             🎓 {data?.year || '1st Year'}
           </span>
@@ -88,7 +99,7 @@ export default function SuccessModal({ data, onClose, onRegisterAnother }) {
             Div {data?.div || 'A'}
           </span>
           <span className="badge badge-emerald text-xs py-1 px-3 font-bold">
-            Entry Fee: ₹600
+            Fee: ₹600
           </span>
         </div>
 
@@ -98,7 +109,7 @@ export default function SuccessModal({ data, onClose, onRegisterAnother }) {
             Next Step: Join the WhatsApp Group
           </div>
           <p className="text-xs text-slate-400 mb-3.5 leading-relaxed">
-            Stay updated with event timings, dress code, venue announcements &amp; performance slots!
+            Stay updated with event timings, dress code, <strong className="text-slate-200">{VENUE_NAME}</strong> directions &amp; performance slots!
           </p>
 
           <a

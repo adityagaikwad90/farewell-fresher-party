@@ -12,9 +12,10 @@ import {
   Send,
   ShieldCheck,
   Ticket,
-  Crown
+  Crown,
+  MapPin
 } from 'lucide-react';
-import { API_BASE } from '../config';
+import { API_BASE, VENUE_NAME, VENUE_MAPS_URL } from '../config';
 
 export default function RegistrationForm({ onSubmitSuccess }) {
   const initialFormData = {
@@ -232,6 +233,23 @@ export default function RegistrationForm({ onSubmitSuccess }) {
                   </div>
                 </div>
               </div>
+
+              {/* Venue Location Row */}
+              <div className="mt-4 pt-3.5 border-t border-white/10 flex items-center justify-between flex-wrap gap-2 text-xs text-slate-300">
+                <div className="flex items-center gap-1.5">
+                  <MapPin size={14} className="text-violet-400 shrink-0" />
+                  <span>Venue: <strong className="text-white">{VENUE_NAME}</strong></span>
+                </div>
+                <a
+                  href={VENUE_MAPS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-violet-300 hover:text-white underline font-semibold inline-flex items-center gap-1"
+                >
+                  <span>Open Maps</span>
+                  <span>↗</span>
+                </a>
+              </div>
             </div>
 
             {/* Action Buttons */}
@@ -267,14 +285,26 @@ export default function RegistrationForm({ onSubmitSuccess }) {
         <div className="glass-panel form-panel border-t-[3px] border-t-violet-500 rounded-3xl bg-[#0B1020]/80 shadow-2xl shadow-black/40">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/15 border border-violet-500/30 text-violet-300 text-xs font-bold uppercase tracking-wider mb-2">
-                <span>⏰ 12:00 PM – 6:00 PM • Complete Celebration Experience</span>
+              <div className="flex items-center gap-2 flex-wrap mb-2">
+                <a
+                  href={VENUE_MAPS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/20 hover:bg-violet-500/35 border border-violet-400/40 text-violet-200 hover:text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 hover:scale-[1.02]"
+                  title="View Shankra Banquet Hall on Google Maps"
+                >
+                  <MapPin size={13} className="text-violet-400" />
+                  <span>📍 {VENUE_NAME}</span>
+                </a>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-slate-300 text-xs font-bold uppercase tracking-wider">
+                  <span>⏰ 12:00 PM – 6:00 PM</span>
+                </div>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-white mb-1 tracking-tight font-display">
                 MCA 1st &amp; 2nd Year Student Registration
               </h2>
               <p className="text-slate-400 text-xs sm:text-sm">
-                Confirm your spot • Entry fee: <strong className="text-emerald-400 font-bold">₹600</strong> (Includes welcome drinks, starters, lunch, DJ &amp; activities)
+                Confirm your spot at <strong className="text-slate-200">{VENUE_NAME}</strong> • Entry fee: <strong className="text-emerald-400 font-bold">₹600</strong> (Includes welcome drinks, starters, lunch, DJ &amp; activities)
               </p>
             </div>
             <div className="text-xs text-rose-400 font-semibold flex items-center gap-1">

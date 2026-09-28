@@ -13,6 +13,7 @@ Built with **React**, **Node.js + Express**, and **Firebase** (with built-in loc
   - Heartwarming welcome letter uniting MCA 1st Year juniors and 2nd Year seniors.
   - Slogan banner: *"🔥 One Department. Two Batches. One Celebration. Countless Memories. 🔥"*
   - Fixed entry fee card: **₹600** (exact amount per student).
+  - Venue Location: **Shankra Banquet Hall** ([Google Maps Link](https://maps.app.goo.gl/nW4mafeMnVHeGayv5)).
   - Direct pulse-animated **WhatsApp Community button** with instant invite link.
 - **Registration Form**:
   - Full Name (required)

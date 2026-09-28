@@ -163,6 +163,74 @@ export async function deleteRegistration(id) {
   return { success: true };
 }
 
+export async function updateCheckInStatus(idOrPassId, checkedIn = true) {
+  const normKey = String(idOrPassId || '').trim().toLowerCase();
+  if (!normKey) throw new Error('Valid ID or Pass ID required');
+
+  const localList = readLocalStore();
+  const index = localList.findIndex(item => 
+    (item.id && String(item.id).toLowerCase() === normKey) ||
+    (item.regNumber && String(item.regNumber).toLowerCase() === normKey) ||
+    (item.passId && String(item.passId).toLowerCase() === normKey)
+  );
+
+  let updatedRecord = null;
+  const nowIso = new Date().toISOString();
+
+  if (index >= 0) {
+    localList[index] = {
+      ...localList[index],
+      checkedIn: Boolean(checkedIn),
+      checkedInAt: checkedIn ? (localList[index].checkedInAt || nowIso) : null
+    };
+    updatedRecord = localList[index];
+    writeLocalStore(localList);
+  }
+
+  // Also update in Firestore if active
+  if (isFirebaseActive && db) {
+    try {
+      let docId = updatedRecord ? updatedRecord.id : null;
+      if (!docId) {
+        const regSnap = await db.collection('mca_registrations').where('regNumber', '==', idOrPassId.trim()).get();
+        if (!regSnap.empty) {
+          docId = regSnap.docs[0].id;
+          updatedRecord = { id: docId, ...regSnap.docs[0].data() };
+        } else {
+          const passSnap = await db.collection('mca_registrations').where('passId', '==', idOrPassId.trim()).get();
+          if (!passSnap.empty) {
+            docId = passSnap.docs[0].id;
+            updatedRecord = { id: docId, ...passSnap.docs[0].data() };
+          }
+        }
+      }
+
+      if (docId) {
+        const updatePayload = {
+          checkedIn: Boolean(checkedIn),
+          checkedInAt: checkedIn ? ((updatedRecord && updatedRecord.checkedInAt) || nowIso) : null
+        };
+        await db.collection('mca_registrations').doc(docId).set(updatePayload, { merge: true });
+        console.log(`✏️ [Firestore] Updated check-in for record: ${docId}, status: ${checkedIn}`);
+        if (!updatedRecord) {
+          const fresh = await db.collection('mca_registrations').doc(docId).get();
+          updatedRecord = { id: docId, ...fresh.data() };
+        } else {
+          updatedRecord = { ...updatedRecord, ...updatePayload };
+        }
+      }
+    } catch (err) {
+      console.error('Firestore check-in update error:', err);
+    }
+  }
+
+  if (!updatedRecord) {
+    throw new Error('Attendee record not found');
+  }
+
+  return updatedRecord;
+}
+
 export function getDatabaseStatus() {
   return {
     isFirebaseActive,

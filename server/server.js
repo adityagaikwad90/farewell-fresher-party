@@ -6,6 +6,7 @@ import {
   saveRegistration,
   getAllRegistrations,
   deleteRegistration,
+  updateCheckInStatus,
   getDatabaseStatus,
   findExistingRegistration,
   normalizeEmail,
@@ -247,6 +248,55 @@ app.delete('/api/responses/:id', requireAdminAuth, async (req, res) => {
   }
 });
 
+// Venue Desk / Admin: Update Attendee Check-In Status
+app.post('/api/checkin', async (req, res) => {
+  try {
+    const { id, passId, checkedIn = true, passcode } = req.body;
+    const authHeader = req.headers['authorization'];
+    const token = req.headers['x-admin-passcode'] || (authHeader ? authHeader.replace('Bearer ', '') : passcode);
+
+    if (token && token !== ADMIN_PASSCODE) {
+      return res.status(401).json({ error: 'Unauthorized: Invalid Passcode' });
+    }
+
+    const key = id || passId;
+    if (!key) {
+      return res.status(400).json({ error: 'Attendee ID or Pass ID is required.' });
+    }
+
+    const updated = await updateCheckInStatus(key, checkedIn);
+    res.json({
+      success: true,
+      message: updated.checkedIn ? 'Attendee marked as Checked In ✅' : 'Check-In status removed',
+      data: updated
+    });
+  } catch (err) {
+    console.error('Check-in update failed:', err);
+    res.status(500).json({ error: err.message || 'Failed to update check-in status.' });
+  }
+});
+
+// Venue Desk: Get All FFP Attendees & Live Counts
+app.get('/api/venue/ffp-attendees', async (req, res) => {
+  try {
+    const records = await getAllRegistrations();
+    const ffp = records.filter(r => (r.regNumber || r.passId || '').toUpperCase().startsWith('FFP'));
+    const checkedInCount = ffp.filter(r => Boolean(r.checkedIn)).length;
+    const pendingCount = ffp.length - checkedInCount;
+
+    res.json({
+      success: true,
+      total: ffp.length,
+      checkedInCount,
+      pendingCount,
+      data: ffp
+    });
+  } catch (err) {
+    console.error('Failed to get FFP attendees:', err);
+    res.status(500).json({ error: 'Failed to fetch FFP attendees.' });
+  }
+});
+
 // Admin: Export to CSV
 app.get('/api/export', requireAdminAuth, async (req, res) => {
   try {
@@ -265,6 +315,8 @@ app.get('/api/export', requireAdminAuth, async (req, res) => {
       'Talent / Event',
       'Wishes for Party',
       'Game / Activity Suggestion',
+      'Checked In Status',
+      'Checked In Time',
       'Submitted At'
     ];
 
@@ -286,6 +338,8 @@ app.get('/api/export', requireAdminAuth, async (req, res) => {
       escapeCsv(r.talent),
       escapeCsv(r.partyWishes),
       escapeCsv(r.gameSuggestion),
+      escapeCsv(r.checkedIn ? 'CHECKED_IN' : 'PENDING'),
+      escapeCsv(r.checkedInAt || ''),
       escapeCsv(r.createdAt || new Date(r.timestamp).toISOString())
     ].join(','));
 

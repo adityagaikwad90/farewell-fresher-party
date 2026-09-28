@@ -10,14 +10,21 @@ import { Heart, MessageCircle, Instagram, Sparkles, MapPin } from 'lucide-react'
 import { INSTAGRAM_URL, WHATSAPP_GROUP_URL, VENUE_NAME, VENUE_MAPS_URL, PAYMENT_FORM_URL } from './config';
 
 export default function App() {
-  // Direct route detection from URL (e.g. /admin or #admin)
+  // Direct route detection from URL (e.g. /admin, #admin, /checkin, #checkin)
+  const isInitialCheckIn = () => {
+    const path = window.location.pathname.toLowerCase();
+    const hash = window.location.hash.toLowerCase();
+    return path === '/checkin' || path.startsWith('/checkin') || hash === '#checkin' || hash === '#venue';
+  };
+
   const isInitialAdmin = () => {
     const path = window.location.pathname.toLowerCase();
     const hash = window.location.hash.toLowerCase();
-    return path === '/admin' || path.startsWith('/admin') || hash === '#admin';
+    return path === '/admin' || path.startsWith('/admin') || hash === '#admin' || isInitialCheckIn();
   };
 
   const [currentView, setCurrentView] = useState(isInitialAdmin() ? 'admin' : 'register');
+  const [adminDefaultTab, setAdminDefaultTab] = useState(isInitialCheckIn() ? 'checkin' : 'overview');
   const [submittedData, setSubmittedData] = useState(null);
 
   useEffect(() => {
@@ -25,6 +32,9 @@ export default function App() {
     const handlePopState = () => {
       if (isInitialAdmin()) {
         setCurrentView('admin');
+        if (isInitialCheckIn()) {
+          setAdminDefaultTab('checkin');
+        }
       } else {
         setCurrentView('register');
       }
@@ -37,6 +47,13 @@ export default function App() {
   const navigateToRegister = () => {
     window.history.pushState(null, '', '/');
     setCurrentView('register');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const navigateToAdmin = (tab = 'overview') => {
+    setAdminDefaultTab(tab);
+    window.history.pushState(null, '', tab === 'checkin' ? '#checkin' : '#admin');
+    setCurrentView('admin');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -231,7 +248,10 @@ export default function App() {
             </section>
           </>
         ) : (
-          <AdminPanel onBackToForm={navigateToRegister} />
+          <AdminPanel
+            onBackToForm={navigateToRegister}
+            defaultTab={adminDefaultTab}
+          />
         )}
       </main>
 
@@ -265,7 +285,7 @@ export default function App() {
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-pink-500/40 text-slate-300 hover:text-white text-xs font-medium transition-all duration-200"
             >
               <Instagram size={13} className="text-pink-400" />
-              <span>Follow <span className="text-pink-300 font-bold">@mca_buzz</span> on Instagram</span>
+              <span>Follow <span className="text-pink-300 font-bold">@mca_buzz</span></span>
             </a>
 
             <a
@@ -275,8 +295,15 @@ export default function App() {
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-emerald-500/40 text-slate-300 hover:text-white text-xs font-medium transition-all duration-200"
             >
               <MessageCircle size={13} className="text-emerald-400" />
-              <span>Official WhatsApp Community</span>
+              <span>WhatsApp Community</span>
             </a>
+
+            <button
+              onClick={() => navigateToAdmin('overview')}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.02] hover:bg-white/[0.06] border border-white/5 text-slate-500 hover:text-slate-300 text-[0.72rem] font-medium transition-all duration-200 cursor-pointer"
+            >
+              <span>Admin Portal</span>
+            </button>
           </div>
         </div>
       </footer>

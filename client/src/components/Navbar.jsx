@@ -35,12 +35,13 @@ export default function Navbar({ onLogoClick, onWorkflowClick, onRegisterClick }
             href={VENUE_MAPS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-3.5 py-1.5 rounded-full text-xs font-bold text-amber-300 hover:text-white bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400/50 transition-all duration-200 inline-flex items-center gap-1.5 shadow-sm"
+            className="px-3 py-1.5 rounded-full text-xs font-bold text-amber-300 hover:text-white bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400/50 transition-all duration-200 inline-flex items-center gap-1.5 shadow-sm"
             title="Open Shankra Banquet Hall on Google Maps"
           >
             <MapPin size={13} className="text-amber-400" />
             <span>📍 Venue Map</span>
           </a>
+
           <button
             onClick={onWorkflowClick}
             className="px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-violet-400/40 transition-all duration-200"

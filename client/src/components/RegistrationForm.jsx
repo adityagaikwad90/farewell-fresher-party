@@ -13,9 +13,12 @@ import {
   ShieldCheck,
   Ticket,
   Crown,
-  MapPin
+  MapPin,
+  Mail,
+  ExternalLink,
+  FileText
 } from 'lucide-react';
-import { API_BASE, VENUE_NAME, VENUE_MAPS_URL } from '../config';
+import { API_BASE, VENUE_NAME, VENUE_MAPS_URL, PAYMENT_FORM_URL } from '../config';
 
 export default function RegistrationForm({ onSubmitSuccess }) {
   const initialFormData = {
@@ -252,6 +255,45 @@ export default function RegistrationForm({ onSubmitSuccess }) {
               </div>
             </div>
 
+            {/* Flash Notice Card */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-amber-500/15 via-rose-500/10 to-violet-500/15 border border-amber-400/50 shadow-[0_0_25px_rgba(245,158,11,0.2)] mb-7 text-left relative overflow-hidden">
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="flex items-center gap-1.5 text-amber-300 font-extrabold text-xs uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping inline-block" />
+                  <span>⚡ Important Notice</span>
+                </div>
+                <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-300 text-[0.7rem] font-black uppercase tracking-wide">
+                  ⚠️ Limited Seats Available!
+                </span>
+              </div>
+
+              <div className="space-y-2 mb-3.5 text-xs sm:text-sm text-slate-200">
+                <div className="flex items-start gap-2">
+                  <Mail size={16} className="text-cyan-400 shrink-0 mt-0.5" />
+                  <p>
+                    <strong>Passes are generated and sent over your mail!</strong> Check your registered email inbox.
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <FileText size={16} className="text-amber-400 shrink-0 mt-0.5" />
+                  <p>
+                    <strong className="text-amber-200">For payment confirmation, please fill this Google Form:</strong>
+                  </p>
+                </div>
+              </div>
+
+              <a
+                href={PAYMENT_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn w-full py-3 text-xs sm:text-sm font-black rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-400 text-slate-950 shadow-lg shadow-amber-500/30 hover:shadow-amber-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 inline-flex items-center justify-center gap-2"
+              >
+                <FileText size={16} />
+                <span>Fill Payment Confirmation Form</span>
+                <ExternalLink size={14} />
+              </a>
+            </div>
+
             {/* Action Buttons */}
             <div className="flex flex-col gap-3.5 max-w-[380px] mx-auto">
               <button
@@ -311,6 +353,25 @@ export default function RegistrationForm({ onSubmitSuccess }) {
               <span>* Indicates required question</span>
             </div>
           </div>
+        </div>
+
+        {/* Flash Announcement Banner */}
+        <div className="p-3.5 sm:p-4 rounded-2xl mb-6 bg-gradient-to-r from-amber-500/15 via-rose-500/10 to-violet-500/15 border border-amber-400/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-slate-200 shadow-md">
+          <div className="flex items-center gap-2.5">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
+            <span>
+              ⚡ <strong className="text-amber-300">Limited seats available!</strong> Passes are generated &amp; sent over your mail.
+            </span>
+          </div>
+          <a
+            href={PAYMENT_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-300 hover:text-white underline font-bold whitespace-nowrap inline-flex items-center gap-1 shrink-0"
+          >
+            <span>Payment Confirmation Form</span>
+            <ExternalLink size={12} />
+          </a>
         </div>
 
         {serverError && (

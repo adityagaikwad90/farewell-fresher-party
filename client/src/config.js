@@ -7,4 +7,5 @@ export const INSTAGRAM_URL = 'https://www.instagram.com/mca_buzz?stkn=MW0zMXdxND
 export const WHATSAPP_GROUP_URL = 'https://chat.whatsapp.com/Cz0Vh80k0zYFA5CkfYZpof';
 export const VENUE_NAME = 'Shankra Banquet Hall';
 export const VENUE_MAPS_URL = 'https://maps.app.goo.gl/nW4mafeMnVHeGayv5';
+export const PAYMENT_FORM_URL = 'https://docs.google.com/forms/d/1r8zCQlylE93s4QR4BTXf6n8EZ2VQcx7cQpPyVnNE9t4/viewform';
 

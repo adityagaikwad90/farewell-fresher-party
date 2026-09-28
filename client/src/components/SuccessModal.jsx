@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { CheckCircle2, MessageCircle, X, Sparkles, MapPin, ExternalLink, Mail, AlertTriangle, FileText } from 'lucide-react';
-import { WHATSAPP_GROUP_URL, VENUE_NAME, VENUE_MAPS_URL, PAYMENT_FORM_URL } from '../config';
+import { CheckCircle2, MessageCircle, X, Sparkles, MapPin, ExternalLink } from 'lucide-react';
+import { WHATSAPP_GROUP_URL, VENUE_NAME, VENUE_MAPS_URL } from '../config';
 
 export default function SuccessModal({ data, onClose, onRegisterAnother }) {
   useEffect(() => {
@@ -101,45 +101,6 @@ export default function SuccessModal({ data, onClose, onRegisterAnother }) {
           <span className="badge badge-emerald text-xs py-1 px-3 font-bold">
             Fee: ₹600
           </span>
-        </div>
-
-        {/* Urgent Flash Notice Card */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-amber-500/15 via-rose-500/10 to-violet-500/15 border border-amber-400/50 shadow-[0_0_25px_rgba(245,158,11,0.2)] mb-5 text-left relative overflow-hidden">
-          <div className="flex items-center justify-between gap-2 mb-3">
-            <div className="flex items-center gap-1.5 text-amber-300 font-extrabold text-xs uppercase tracking-wider">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping inline-block" />
-              <span>⚡ Important Notice</span>
-            </div>
-            <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-300 text-[0.7rem] font-black uppercase tracking-wide">
-              ⚠️ Limited Seats Available!
-            </span>
-          </div>
-
-          <div className="space-y-2 mb-3.5 text-xs sm:text-sm text-slate-200">
-            <div className="flex items-start gap-2">
-              <Mail size={16} className="text-cyan-400 shrink-0 mt-0.5" />
-              <p>
-                <strong>Passes are generated and sent over your mail!</strong> Please check your registered email inbox.
-              </p>
-            </div>
-            <div className="flex items-start gap-2">
-              <FileText size={16} className="text-amber-400 shrink-0 mt-0.5" />
-              <p>
-                <strong className="text-amber-200">For payment confirmation, please fill this Google Form:</strong>
-              </p>
-            </div>
-          </div>
-
-          <a
-            href={PAYMENT_FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn w-full py-3 text-xs sm:text-sm font-black rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-400 text-slate-950 shadow-lg shadow-amber-500/30 hover:shadow-amber-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 inline-flex items-center justify-center gap-2"
-          >
-            <FileText size={16} />
-            <span>Fill Payment Confirmation Form</span>
-            <ExternalLink size={14} />
-          </a>
         </div>
 
         {/* WhatsApp Group Box */}

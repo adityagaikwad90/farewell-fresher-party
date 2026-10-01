@@ -7,7 +7,6 @@ import {
   Filter,
   RefreshCw,
   UserCheck,
-  UserX,
   Sparkles,
   Phone,
   Mail,
@@ -165,21 +164,29 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
     }
   };
 
-  // Quick scanner direct match
+  // Quick scanner direct match (supports searching with or without FFP26- prefix)
   const quickMatchedStudent = useMemo(() => {
     const raw = quickPassInput.trim().toLowerCase();
-    if (!raw || raw.length < 3) return null;
+    if (!raw || raw.length < 2) return null;
+
+    const cleanRaw = raw.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
 
     return attendees.find(student => {
       const passId = (student.passId || student.regNumber || '').toLowerCase();
+      const cleanPassId = passId.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
       const name = (student.fullName || '').toLowerCase();
       const phone = (student.contact || '').replace(/\D/g, '');
       const rawDigits = raw.replace(/\D/g, '');
 
-      return passId === raw ||
-             passId.includes(raw) ||
-             (rawDigits.length >= 4 && phone.includes(rawDigits)) ||
-             (name.length >= 3 && name.includes(raw));
+      return (
+        passId === raw ||
+        cleanPassId === cleanRaw ||
+        passId.includes(raw) ||
+        (cleanRaw.length >= 2 && cleanPassId.includes(cleanRaw)) ||
+        (cleanRaw.length >= 2 && cleanPassId.startsWith(cleanRaw)) ||
+        (rawDigits.length >= 4 && phone.includes(rawDigits)) ||
+        (name.length >= 2 && name.includes(raw))
+      );
     });
   }, [quickPassInput, attendees]);
 
@@ -211,15 +218,23 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
         if (filterYear === '2nd Year' && !studentYear.includes('2')) return false;
       }
 
-      // Search term
+      // Search term (searches with or without FFP26- prefix)
       if (searchTerm.trim()) {
         const q = searchTerm.trim().toLowerCase();
+        const cleanQ = q.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
         const passId = (student.passId || student.regNumber || '').toLowerCase();
+        const cleanPassId = passId.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
         const name = (student.fullName || '').toLowerCase();
         const contact = (student.contact || '').toLowerCase();
         const email = (student.email || '').toLowerCase();
 
-        return passId.includes(q) || name.includes(q) || contact.includes(q) || email.includes(q);
+        return (
+          passId.includes(q) ||
+          (cleanQ && cleanPassId.includes(cleanQ)) ||
+          name.includes(q) ||
+          contact.includes(q) ||
+          email.includes(q)
+        );
       }
 
       return true;
@@ -452,7 +467,7 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
             </div>
 
             <div className="text-xs text-slate-400">
-              💡 Tip: Type or scan full pass ID like <strong className="text-violet-300 font-mono">FFP26-qSEA60ak</strong> or student name
+              💡 Tip: Just enter code (e.g. <strong className="text-violet-300 font-mono">uXJMhpjh</strong>) or student name — no need to type FFP26-!
             </div>
           </div>
 
@@ -463,7 +478,7 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
               type="text"
               value={quickPassInput}
               onChange={(e) => setQuickPassInput(e.target.value)}
-              placeholder="Enter student pass ID (e.g. FFP26-...) or name..."
+              placeholder="Enter pass code (e.g. uXJMhpjh) or student name..."
               className="form-input pl-12 pr-10 py-3.5 text-sm sm:text-base font-mono rounded-2xl bg-black/40 border-violet-500/40 focus:border-violet-400 focus:ring-2 focus:ring-violet-500/30 text-white placeholder:text-slate-500"
             />
             {quickPassInput && (
@@ -565,7 +580,7 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
             <input
               type="text"
-              placeholder="Search table by name, pass ID, contact..."
+              placeholder="Search table by name or pass code (e.g. uXJMhpjh)..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="form-input pl-10 text-xs sm:text-sm py-2 rounded-xl"
@@ -650,21 +665,18 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
           <table className="w-full border-collapse text-left text-xs sm:text-sm">
             <thead>
               <tr className="border-b border-white/10 bg-white/[0.02]">
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">#</th>
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Pass ID</th>
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Student Name</th>
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Year &amp; Div</th>
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Contact</th>
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Talent / Act</th>
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem]">Status</th>
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.7rem] text-right">Venue Action</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem]">Pass ID</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem]">Name</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem]">Year</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem]">Div</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem] text-right">Check In</th>
               </tr>
             </thead>
             <tbody>
               {filteredAttendees.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="p-12 text-center text-slate-400">
-                    No matching FFP attendee records found.
+                  <td colSpan={5} className="p-12 text-center text-slate-400">
+                    No matching attendee records found.
                   </td>
                 </tr>
               ) : (
@@ -679,89 +691,51 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
                         isCheckedIn ? 'bg-emerald-500/[0.04] hover:bg-emerald-500/[0.08]' : 'hover:bg-white/[0.03]'
                       }`}
                     >
-                      <td className="p-3.5 text-slate-500 font-mono text-xs">
-                        {idx + 1}
-                      </td>
-
                       {/* Pass ID */}
-                      <td className="p-3.5">
-                        <span className="font-mono font-bold text-violet-300 bg-violet-500/15 border border-violet-500/30 px-2.5 py-1 rounded-lg">
+                      <td className="p-3.5 font-mono font-bold text-violet-300 whitespace-nowrap">
+                        <span className="bg-violet-500/15 border border-violet-500/30 px-2.5 py-1 rounded-lg">
                           {passId}
                         </span>
                       </td>
 
-                      {/* Full Name */}
+                      {/* Student Name */}
                       <td className="p-3.5">
                         <div className="font-bold text-white text-sm">
                           {student.fullName}
                         </div>
-                        <div className="text-[0.7rem] text-slate-400 truncate max-w-[200px]">
-                          {student.email}
-                        </div>
                       </td>
 
-                      {/* Year & Division */}
+                      {/* Year */}
                       <td className="p-3.5 whitespace-nowrap">
-                        <span className={`badge ${(student.year || '1st Year').includes('1') ? 'badge-purple' : 'badge-amber'} mr-1.5`}>
+                        <span className={`badge ${(student.year || '1st Year').includes('1') ? 'badge-purple' : 'badge-amber'}`}>
                           {student.year || '1st Year'}
                         </span>
+                      </td>
+
+                      {/* Division */}
+                      <td className="p-3.5 whitespace-nowrap">
                         <span className={`badge ${student.div === 'A' ? 'badge-purple' : 'badge-pink'}`}>
-                          Div {student.div}
+                          Div {student.div || 'A'}
                         </span>
                       </td>
 
-                      {/* Contact */}
-                      <td className="p-3.5 text-slate-300 font-mono text-xs">
-                        {student.contact ? (
-                          <a href={`tel:${student.contact}`} className="hover:text-violet-300">
-                            {student.contact}
-                          </a>
-                        ) : (
-                          <span className="text-slate-500 italic">None</span>
-                        )}
-                      </td>
-
-                      {/* Talent */}
-                      <td className="p-3.5 text-xs text-slate-300">
-                        {student.talent && student.talent !== 'None' ? (
-                          <span className="text-fuchsia-300 font-semibold">{student.talent}</span>
-                        ) : (
-                          <span className="text-slate-500">None</span>
-                        )}
-                      </td>
-
-                      {/* Status */}
-                      <td className="p-3.5 whitespace-nowrap">
-                        {isCheckedIn ? (
-                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs shadow-sm shadow-emerald-500/10">
-                            <CheckCircle2 size={13} className="text-emerald-400" />
-                            <span>Checked In ✅</span>
-                          </div>
-                        ) : (
-                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 font-semibold text-xs">
-                            <Clock size={13} className="text-amber-400" />
-                            <span>Pending Entry</span>
-                          </div>
-                        )}
-                      </td>
-
-                      {/* Action */}
+                      {/* Check In Action Button */}
                       <td className="p-3.5 text-right whitespace-nowrap">
                         {isCheckedIn ? (
                           <button
                             onClick={() => handleToggleCheckIn(student, false)}
-                            className="btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-white/[0.04] hover:bg-rose-500/20 text-slate-400 hover:text-rose-300 border border-white/10 hover:border-rose-500/40 transition-all duration-200"
-                            title="Undo check-in"
+                            className="btn px-3.5 py-1.5 text-xs font-bold rounded-xl bg-emerald-500/20 hover:bg-rose-500/20 text-emerald-300 hover:text-rose-300 border border-emerald-500/40 hover:border-rose-500/40 transition-all duration-200 inline-flex items-center gap-1.5 cursor-pointer shadow-sm shadow-emerald-500/10"
+                            title="Click to Undo Check-In"
                           >
-                            <UserX size={13} />
-                            <span>Undo</span>
+                            <CheckCircle2 size={15} className="text-emerald-400" />
+                            <span>Checked In ✓</span>
                           </button>
                         ) : (
                           <button
                             onClick={() => handleToggleCheckIn(student, true)}
-                            className="btn px-3.5 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/30 hover:scale-105 active:scale-95 transition-all duration-200 inline-flex items-center gap-1.5"
+                            className="btn px-4 py-1.5 text-xs font-bold rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white shadow-md shadow-emerald-600/30 hover:scale-105 active:scale-95 transition-all duration-200 inline-flex items-center gap-1.5 cursor-pointer"
                           >
-                            <UserCheck size={14} />
+                            <UserCheck size={15} />
                             <span>Check In</span>
                           </button>
                         )}

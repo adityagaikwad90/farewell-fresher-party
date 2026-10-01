@@ -144,11 +144,17 @@ export default function AdminPanel({ onBackToForm, defaultTab = 'overview' }) {
 
   // Filtered Data
   const filteredData = data.filter(item => {
+    const q = searchTerm.trim().toLowerCase();
+    const cleanQ = q.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
+    const passId = (item.passId || item.regNumber || '').toLowerCase();
+    const cleanPassId = passId.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
+
     const matchesSearch =
-      (item.fullName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (item.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.fullName || '').toLowerCase().includes(q) ||
+      (item.email || '').toLowerCase().includes(q) ||
       (item.contact || '').includes(searchTerm) ||
-      (item.regNumber || '').toLowerCase().includes(searchTerm.toLowerCase());
+      passId.includes(q) ||
+      (cleanQ && cleanPassId.includes(cleanQ));
 
     const matchesYear = selectedYear === 'ALL' || (item.year || '1st Year') === selectedYear;
     const matchesDiv = selectedDiv === 'ALL' || item.div === selectedDiv;

@@ -1,5 +1,5 @@
 // Pre-confirmed FFP Pass Attendees for Shankra Banquet Hall Venue Check-In
-// Total records: 99
+// Total records: 102
 
 export const INITIAL_FFP_STUDENTS = [
   {
@@ -1783,5 +1783,59 @@ export const INITIAL_FFP_STUDENTS = [
     "checkedInAt": null,
     "createdAt": "2026-09-30T19:43:43.788Z",
     "timestamp": 1790797423788
+  },
+  {
+    "id": "8c540f5e-04a9-4674-9d27-4dcfc64eefb3",
+    "passId": "FFP26-Oo806Sp7",
+    "regNumber": "FFP26-Oo806Sp7",
+    "fullName": "Akshad Vispute",
+    "email": "akshadvispute2005@gmail.com",
+    "contact": "",
+    "year": "1st Year",
+    "div": "A",
+    "fee": 600,
+    "talent": "None",
+    "partyWishes": "",
+    "gameSuggestion": "",
+    "checkedIn": false,
+    "checkedInAt": null,
+    "createdAt": "2026-10-01T15:12:48.073Z",
+    "timestamp": 1790867568073
+  },
+  {
+    "id": "fed65d88-dace-48fa-8a0d-35938705ee28",
+    "passId": "FFP26-WN6dxv_r",
+    "regNumber": "FFP26-WN6dxv_r",
+    "fullName": "Pratiksha Pimple",
+    "email": "pimplepratiksha5112@gmail.com",
+    "contact": "",
+    "year": "1st Year",
+    "div": "A",
+    "fee": 600,
+    "talent": "None",
+    "partyWishes": "",
+    "gameSuggestion": "",
+    "checkedIn": false,
+    "checkedInAt": null,
+    "createdAt": "2026-10-01T15:12:48.073Z",
+    "timestamp": 1790867568074
+  },
+  {
+    "id": "c1f7b82e-9d21-4f18-bb52-9b51fa1906a1",
+    "passId": "FFP26-P1hUNXQs",
+    "regNumber": "FFP26-P1hUNXQs",
+    "fullName": "punam nemnar",
+    "email": "punamnemnar23@gmail.com",
+    "contact": "",
+    "year": "1st Year",
+    "div": "A",
+    "fee": 600,
+    "talent": "None",
+    "partyWishes": "",
+    "gameSuggestion": "",
+    "checkedIn": false,
+    "checkedInAt": null,
+    "createdAt": "2026-10-01T15:15:00.000Z",
+    "timestamp": 1790867700000
   }
 ];

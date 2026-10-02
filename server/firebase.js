@@ -135,14 +135,31 @@ export async function getAllRegistrations() {
     try {
       const snapshot = await db.collection('mca_registrations').orderBy('timestamp', 'desc').get();
       if (!snapshot.empty) {
-        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        return snapshot.docs.map(doc => {
+          const d = doc.data();
+          return {
+            id: doc.id,
+            ...d,
+            passId: d.passId || d.regNumber || doc.id,
+            regNumber: d.regNumber || d.passId || doc.id,
+            checkedIn: Boolean(d.checkedIn),
+            checkedInAt: d.checkedIn ? (d.checkedInAt || null) : null
+          };
+        });
       }
     } catch (err) {
       console.warn('Firestore fetch failed, reading from local fallback:', err.message);
     }
   }
 
-  return readLocalStore();
+  const local = readLocalStore();
+  return local.map(r => ({
+    ...r,
+    passId: r.passId || r.regNumber || r.id,
+    regNumber: r.regNumber || r.passId || r.id,
+    checkedIn: Boolean(r.checkedIn),
+    checkedInAt: r.checkedIn ? (r.checkedInAt || null) : null
+  }));
 }
 
 export async function deleteRegistration(id) {
@@ -163,19 +180,50 @@ export async function deleteRegistration(id) {
   return { success: true };
 }
 
-export async function updateCheckInStatus(idOrPassId, checkedIn = true) {
-  const normKey = String(idOrPassId || '').trim().toLowerCase();
-  if (!normKey) throw new Error('Valid ID or Pass ID required');
+export async function updateCheckInStatus(target, checkedIn = true) {
+  let targetId = '';
+  let targetPassId = '';
+  
+  if (typeof target === 'object' && target !== null) {
+    targetId = String(target.id || '').trim();
+    targetPassId = String(target.passId || target.regNumber || '').trim();
+  } else {
+    const raw = String(target || '').trim();
+    if (raw.toUpperCase().startsWith('FFP') || raw.toUpperCase().startsWith('MCA')) {
+      targetPassId = raw;
+    } else {
+      targetId = raw;
+    }
+    if (!targetPassId) targetPassId = raw;
+  }
 
+  const normId = targetId.toLowerCase();
+  const normPass = targetPassId.toLowerCase();
+  const cleanPass = normPass.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
+
+  if (!normId && !normPass) {
+    throw new Error('Valid ID or Pass ID required');
+  }
+
+  const nowIso = new Date().toISOString();
   const localList = readLocalStore();
-  const index = localList.findIndex(item => 
-    (item.id && String(item.id).toLowerCase() === normKey) ||
-    (item.regNumber && String(item.regNumber).toLowerCase() === normKey) ||
-    (item.passId && String(item.passId).toLowerCase() === normKey)
-  );
+
+  // 1. Find in local list
+  let index = localList.findIndex(item => {
+    const itemId = String(item.id || '').toLowerCase();
+    const itemReg = String(item.regNumber || '').toLowerCase();
+    const itemPass = String(item.passId || '').toLowerCase();
+    const itemCleanReg = itemReg.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
+    const itemCleanPass = itemPass.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
+
+    if (normId && itemId === normId) return true;
+    if (normPass && (itemReg === normPass || itemPass === normPass)) return true;
+    if (cleanPass && (itemCleanReg === cleanPass || itemCleanPass === cleanPass)) return true;
+    return false;
+  });
 
   let updatedRecord = null;
-  const nowIso = new Date().toISOString();
+  let docId = null;
 
   if (index >= 0) {
     localList[index] = {
@@ -184,40 +232,94 @@ export async function updateCheckInStatus(idOrPassId, checkedIn = true) {
       checkedInAt: checkedIn ? (localList[index].checkedInAt || nowIso) : null
     };
     updatedRecord = localList[index];
+    docId = updatedRecord.id;
     writeLocalStore(localList);
   }
 
-  // Also update in Firestore if active
+  // 2. Also update in Firestore if active
   if (isFirebaseActive && db) {
     try {
-      let docId = updatedRecord ? updatedRecord.id : null;
-      if (!docId) {
-        const regSnap = await db.collection('mca_registrations').where('regNumber', '==', idOrPassId.trim()).get();
-        if (!regSnap.empty) {
-          docId = regSnap.docs[0].id;
-          updatedRecord = { id: docId, ...regSnap.docs[0].data() };
-        } else {
-          const passSnap = await db.collection('mca_registrations').where('passId', '==', idOrPassId.trim()).get();
-          if (!passSnap.empty) {
-            docId = passSnap.docs[0].id;
-            updatedRecord = { id: docId, ...passSnap.docs[0].data() };
+      let firestoreDocRef = null;
+      let existingFirestoreData = null;
+
+      // Check by candidate document IDs (docId from local or targetId)
+      const candidateDocIds = [docId, targetId].filter(Boolean);
+      for (const cId of candidateDocIds) {
+        const snap = await db.collection('mca_registrations').doc(cId).get();
+        if (snap.exists) {
+          firestoreDocRef = snap.ref;
+          existingFirestoreData = { id: snap.id, ...snap.data() };
+          break;
+        }
+      }
+
+      // If not resolved, query by regNumber or passId (exact and uppercase)
+      if (!firestoreDocRef && targetPassId) {
+        const queries = [
+          db.collection('mca_registrations').where('regNumber', '==', targetPassId),
+          db.collection('mca_registrations').where('passId', '==', targetPassId),
+          db.collection('mca_registrations').where('regNumber', '==', targetPassId.toUpperCase()),
+          db.collection('mca_registrations').where('passId', '==', targetPassId.toUpperCase())
+        ];
+
+        for (const q of queries) {
+          const snap = await q.get();
+          if (!snap.empty) {
+            firestoreDocRef = snap.docs[0].ref;
+            existingFirestoreData = { id: snap.docs[0].id, ...snap.docs[0].data() };
+            break;
           }
         }
       }
 
-      if (docId) {
+      // If still not resolved, scan in memory
+      if (!firestoreDocRef) {
+        const allSnap = await db.collection('mca_registrations').get();
+        for (const doc of allSnap.docs) {
+          const d = doc.data();
+          const dId = String(doc.id).toLowerCase();
+          const dReg = String(d.regNumber || '').toLowerCase();
+          const dPass = String(d.passId || '').toLowerCase();
+          const dClean = dReg.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
+
+          if (
+            (normId && dId === normId) ||
+            (normPass && (dReg === normPass || dPass === normPass)) ||
+            (cleanPass && dClean === cleanPass)
+          ) {
+            firestoreDocRef = doc.ref;
+            existingFirestoreData = { id: doc.id, ...d };
+            break;
+          }
+        }
+      }
+
+      if (firestoreDocRef) {
         const updatePayload = {
           checkedIn: Boolean(checkedIn),
-          checkedInAt: checkedIn ? ((updatedRecord && updatedRecord.checkedInAt) || nowIso) : null
+          checkedInAt: checkedIn ? ((existingFirestoreData && existingFirestoreData.checkedInAt) || nowIso) : null
         };
-        await db.collection('mca_registrations').doc(docId).set(updatePayload, { merge: true });
-        console.log(`✏️ [Firestore] Updated check-in for record: ${docId}, status: ${checkedIn}`);
-        if (!updatedRecord) {
-          const fresh = await db.collection('mca_registrations').doc(docId).get();
-          updatedRecord = { id: docId, ...fresh.data() };
+        await firestoreDocRef.set(updatePayload, { merge: true });
+        console.log(`✏️ [Firestore] Updated check-in for record: ${firestoreDocRef.id}, status: ${checkedIn}`);
+
+        const mergedRecord = {
+          ...(existingFirestoreData || {}),
+          ...(updatedRecord || {}),
+          ...updatePayload,
+          id: firestoreDocRef.id
+        };
+
+        updatedRecord = mergedRecord;
+
+        // Keep localList in sync with this Firestore document
+        const freshLocalList = readLocalStore();
+        const lIndex = freshLocalList.findIndex(item => item.id === firestoreDocRef.id);
+        if (lIndex >= 0) {
+          freshLocalList[lIndex] = { ...freshLocalList[lIndex], ...updatePayload };
         } else {
-          updatedRecord = { ...updatedRecord, ...updatePayload };
+          freshLocalList.unshift(mergedRecord);
         }
+        writeLocalStore(freshLocalList);
       }
     } catch (err) {
       console.error('Firestore check-in update error:', err);
@@ -225,7 +327,7 @@ export async function updateCheckInStatus(idOrPassId, checkedIn = true) {
   }
 
   if (!updatedRecord) {
-    throw new Error('Attendee record not found');
+    throw new Error(`Attendee record not found for key: ${targetPassId || targetId}`);
   }
 
   return updatedRecord;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Users,
   Search,
@@ -34,6 +34,14 @@ export default function AdminPanel({ onBackToForm, defaultTab = 'overview' }) {
   const [selectedYear, setSelectedYear] = useState('ALL');
   const [selectedDiv, setSelectedDiv] = useState('ALL');
   const [selectedTalent, setSelectedTalent] = useState('ALL');
+
+  // Only authorized FFP Gate Pass attendees for Venue Gate Check-In
+  const venuePassAttendees = useMemo(() => {
+    return data.filter(item => {
+      const p = String(item.passId || item.regNumber || '').toUpperCase().trim();
+      return p.startsWith('FFP');
+    });
+  }, [data]);
 
   useEffect(() => {
     const savedToken = sessionStorage.getItem('mca_admin_passcode');
@@ -135,6 +143,62 @@ export default function AdminPanel({ onBackToForm, defaultTab = 'overview' }) {
       }
     } catch (err) {
       alert('Failed to delete response.');
+    }
+  };
+
+  const handleToggleCheckIn = async (item, shouldCheckIn = true) => {
+    try {
+      const res = await fetch(`${API_BASE}/api/checkin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-passcode': passcode
+        },
+        body: JSON.stringify({
+          id: item.id,
+          passId: item.passId || item.regNumber,
+          checkedIn: shouldCheckIn,
+          passcode: passcode
+        })
+      });
+      if (res.ok) {
+        const json = await res.json();
+        const nowIso = new Date().toISOString();
+        setData(prev => prev.map(rec => {
+          if (rec.id === item.id || (item.passId && rec.passId === item.passId) || (item.regNumber && rec.regNumber === item.regNumber)) {
+            return {
+              ...rec,
+              checkedIn: shouldCheckIn,
+              checkedInAt: shouldCheckIn ? nowIso : null
+            };
+          }
+          return rec;
+        }));
+        if (selectedItem && (selectedItem.id === item.id || selectedItem.passId === item.passId || selectedItem.regNumber === item.regNumber)) {
+          setSelectedItem(prev => ({
+            ...prev,
+            checkedIn: shouldCheckIn,
+            checkedInAt: shouldCheckIn ? nowIso : null
+          }));
+        }
+        // Sync localStorage
+        try {
+          const key = item.passId || item.regNumber || item.id;
+          const stored = JSON.parse(localStorage.getItem('mca2026_ffp_checkins') || '{}');
+          if (shouldCheckIn) {
+            stored[key] = { checkedInAt: nowIso, studentName: item.fullName };
+          } else {
+            delete stored[key];
+          }
+          localStorage.setItem('mca2026_ffp_checkins', JSON.stringify(stored));
+        } catch (e) {}
+        fetchStats();
+      } else {
+        const errJson = await res.json().catch(() => ({}));
+        alert(`Check-in update failed: ${errJson.error || 'Server error'}`);
+      }
+    } catch (err) {
+      alert(`Network error updating check-in: ${err.message}`);
     }
   };
 
@@ -306,11 +370,11 @@ export default function AdminPanel({ onBackToForm, defaultTab = 'overview' }) {
             }`}
           >
             <Ticket size={16} />
-            <span>Venue Gate Check-In (FFP Passes)</span>
+            <span>Venue Gate Check-In</span>
             <span className={`px-2 py-0.5 rounded-full text-[0.7rem] font-black ${
               adminTab === 'checkin' ? 'bg-slate-950 text-emerald-300' : 'bg-emerald-500/20 text-emerald-300'
             }`}>
-              {data.filter(r => (r.regNumber || r.passId || '').toUpperCase().startsWith('FFP')).length || 54}
+              {venuePassAttendees.filter(r => Boolean(r.checkedIn)).length} / {venuePassAttendees.length}
             </span>
           </button>
         </div>
@@ -320,6 +384,41 @@ export default function AdminPanel({ onBackToForm, defaultTab = 'overview' }) {
             onBackToDashboard={() => setAdminTab('overview')}
             onBackToHome={onBackToForm}
             adminPasscode={passcode}
+            sharedAttendees={venuePassAttendees}
+            onAttendeeCheckInChange={(updatedItem) => {
+              setData(prev => prev.map(rec => {
+                const isMatch = rec.id === updatedItem.id ||
+                  (updatedItem.passId && (rec.passId === updatedItem.passId || rec.regNumber === updatedItem.passId)) ||
+                  (updatedItem.regNumber && (rec.passId === updatedItem.regNumber || rec.regNumber === updatedItem.regNumber));
+                if (isMatch) {
+                  return {
+                    ...rec,
+                    checkedIn: updatedItem.checkedIn,
+                    checkedInAt: updatedItem.checkedInAt
+                  };
+                }
+                return rec;
+              }));
+              fetchStats();
+            }}
+            onDataFetched={(liveList) => {
+              if (liveList && liveList.length > 0) {
+                setData(prev => {
+                  const map = new Map();
+                  prev.forEach(p => map.set(p.passId || p.regNumber || p.id, p));
+                  liveList.forEach(l => {
+                    const k = l.passId || l.regNumber || l.id;
+                    if (map.has(k)) {
+                      map.set(k, { ...map.get(k), checkedIn: l.checkedIn, checkedInAt: l.checkedInAt });
+                    } else {
+                      map.set(k, l);
+                    }
+                  });
+                  return Array.from(map.values());
+                });
+                fetchStats();
+              }
+            }}
           />
         ) : (
           <>
@@ -549,10 +648,24 @@ export default function AdminPanel({ onBackToForm, defaultTab = 'overview' }) {
                     <td className="p-3.5 font-mono font-bold text-violet-400">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <span>{item.regNumber || item.passId || `MCA-${idx + 1}`}</span>
-                        {item.checkedIn && (
-                          <span className="text-[0.65rem] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-sans font-bold whitespace-nowrap">
+                        {item.checkedIn ? (
+                          <button
+                            type="button"
+                            onClick={() => handleToggleCheckIn(item, false)}
+                            title="Checked In - Click to Undo Check-In"
+                            className="text-[0.65rem] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-sans font-bold hover:bg-rose-500/20 hover:text-rose-300 transition-colors whitespace-nowrap cursor-pointer border border-emerald-500/30"
+                          >
                             ✓ In
-                          </span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => handleToggleCheckIn(item, true)}
+                            title="Click to Check In"
+                            className="text-[0.65rem] px-1.5 py-0.5 rounded bg-white/[0.04] text-slate-400 hover:text-emerald-300 hover:bg-emerald-500/15 transition-colors whitespace-nowrap cursor-pointer border border-white/10"
+                          >
+                            + In
+                          </button>
                         )}
                       </div>
                     </td>
@@ -687,6 +800,41 @@ export default function AdminPanel({ onBackToForm, defaultTab = 'overview' }) {
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">
                   {selectedItem.gameSuggestion || <em className="text-slate-500">No response provided.</em>}
                 </p>
+              </div>
+
+              {/* Check-In Status Banner & Action */}
+              <div className="mb-5 p-3.5 rounded-xl border flex items-center justify-between gap-3 bg-white/[0.02] border-white/10">
+                <div className="flex items-center gap-2">
+                  {selectedItem.checkedIn ? (
+                    <>
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <div>
+                        <span className="text-emerald-300 font-bold text-xs">Checked In ✅</span>
+                        {selectedItem.checkedInAt && (
+                          <span className="text-slate-400 text-[0.7rem] block">
+                            At: {new Date(selectedItem.checkedInAt).toLocaleTimeString()}
+                          </span>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                      <span className="text-amber-300 font-semibold text-xs">Pending Venue Check-In</span>
+                    </>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleToggleCheckIn(selectedItem, !selectedItem.checkedIn)}
+                  className={`btn px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                    selectedItem.checkedIn
+                      ? 'bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 border border-rose-500/40'
+                      : 'bg-emerald-600 text-white hover:bg-emerald-500 shadow-md shadow-emerald-600/30'
+                  }`}
+                >
+                  {selectedItem.checkedIn ? 'Undo Check-In' : 'Mark Checked In ✓'}
+                </button>
               </div>
 
               <div className="flex justify-end gap-3">

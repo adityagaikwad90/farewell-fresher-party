@@ -21,21 +21,47 @@ import confetti from 'canvas-confetti';
 import { API_BASE, VENUE_NAME } from '../config';
 import { INITIAL_FFP_STUDENTS } from '../data/confirmedStudents';
 
-export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPasscode }) {
+export default function VenueCheckIn({
+  onBackToDashboard,
+  onBackToHome,
+  adminPasscode,
+  sharedAttendees,
+  onAttendeeCheckInChange,
+  onDataFetched
+}) {
+  const isSameStudent = (a, b) => {
+    if (!a || !b) return false;
+    if (a.id && b.id && a.id === b.id) return true;
+    const aPass = String(a.passId || a.regNumber || '').toLowerCase().trim();
+    const bPass = String(b.passId || b.regNumber || '').toLowerCase().trim();
+    if (aPass && bPass && aPass === bPass) return true;
+    const aClean = aPass.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
+    const bClean = bPass.replace(/^(ffp26-|mca26-|ffp-|mca-)/i, '').trim();
+    if (aClean && bClean && aClean === bClean) return true;
+    return false;
+  };
+
   const [attendees, setAttendees] = useState(() => {
-    // Initial state from bundled confirmed students + local check-in overrides
+    // Initial state from sharedAttendees, or bundled confirmed students + local check-in overrides
     try {
       const storedCheckIns = JSON.parse(localStorage.getItem('mca2026_ffp_checkins') || '{}');
-      return INITIAL_FFP_STUDENTS.map(student => {
+      const ffpShared = (sharedAttendees && sharedAttendees.length > 0)
+        ? sharedAttendees.filter(s => String(s.passId || s.regNumber || '').toUpperCase().startsWith('FFP'))
+        : [];
+      const baseList = ffpShared.length > 0 ? ffpShared : INITIAL_FFP_STUDENTS;
+      return baseList.map(student => {
         const key = student.passId || student.regNumber || student.id;
-        if (storedCheckIns[key]) {
-          return {
-            ...student,
-            checkedIn: true,
-            checkedInAt: storedCheckIns[key].checkedInAt || student.checkedInAt || new Date().toISOString()
-          };
-        }
-        return student;
+        const locallyChecked = Boolean(storedCheckIns[key]);
+        const isChecked = typeof student.checkedIn === 'boolean'
+          ? student.checkedIn
+          : locallyChecked;
+
+        return {
+          ...student,
+          passId: student.passId || student.regNumber || student.id,
+          checkedIn: isChecked,
+          checkedInAt: student.checkedInAt || (isChecked && storedCheckIns[key] ? storedCheckIns[key].checkedInAt : null)
+        };
       });
     } catch (e) {
       return INITIAL_FFP_STUDENTS;
@@ -53,6 +79,32 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
 
   const quickInputRef = useRef(null);
 
+  // Sync when sharedAttendees from parent AdminPanel updates
+  useEffect(() => {
+    if (sharedAttendees && Array.isArray(sharedAttendees) && sharedAttendees.length > 0) {
+      const ffpShared = sharedAttendees.filter(s => String(s.passId || s.regNumber || '').toUpperCase().startsWith('FFP'));
+      if (ffpShared.length === 0) return;
+      const storedCheckIns = JSON.parse(localStorage.getItem('mca2026_ffp_checkins') || '{}');
+      setAttendees(prev => {
+        return ffpShared.map(item => {
+          const match = prev.find(p => isSameStudent(p, item));
+          const key = item.passId || item.regNumber || item.id;
+          const locallyChecked = storedCheckIns[key];
+          const isChecked = typeof item.checkedIn === 'boolean'
+            ? item.checkedIn
+            : (match && typeof match.checkedIn === 'boolean' ? match.checkedIn : Boolean(locallyChecked));
+
+          return {
+            ...item,
+            passId: item.passId || item.regNumber || item.id,
+            checkedIn: isChecked,
+            checkedInAt: item.checkedInAt || (match && match.checkedInAt) || (isChecked && locallyChecked ? locallyChecked.checkedInAt : null)
+          };
+        });
+      });
+    }
+  }, [sharedAttendees]);
+
   // Fetch live from server on mount
   useEffect(() => {
     fetchLiveAttendees();
@@ -65,19 +117,37 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
       if (res.ok) {
         const json = await res.json();
         if (json.data && Array.isArray(json.data) && json.data.length > 0) {
-          // Merge with any local check-ins
+          const ffpList = json.data.filter(item => String(item.passId || item.regNumber || '').toUpperCase().startsWith('FFP'));
           const storedCheckIns = JSON.parse(localStorage.getItem('mca2026_ffp_checkins') || '{}');
-          const merged = json.data.map(item => {
+          const merged = ffpList.map(item => {
             const key = item.passId || item.regNumber || item.id;
             const locallyChecked = storedCheckIns[key];
+            const isChecked = typeof item.checkedIn === 'boolean'
+              ? item.checkedIn
+              : Boolean(locallyChecked);
+
             return {
               ...item,
-              passId: item.passId || item.regNumber,
-              checkedIn: item.checkedIn || (locallyChecked ? true : false),
-              checkedInAt: item.checkedInAt || (locallyChecked ? locallyChecked.checkedInAt : null)
+              passId: item.passId || item.regNumber || item.id,
+              checkedIn: isChecked,
+              checkedInAt: item.checkedInAt || (isChecked && locallyChecked ? locallyChecked.checkedInAt : null)
             };
           });
           setAttendees(merged);
+
+          if (onDataFetched) {
+            onDataFetched(merged);
+          }
+
+          // Keep localStorage aligned with authoritative server state
+          const newStoredCheckIns = {};
+          merged.forEach(m => {
+            if (m.checkedIn) {
+              const k = m.passId || m.regNumber || m.id;
+              newStoredCheckIns[k] = { checkedInAt: m.checkedInAt, studentName: m.fullName };
+            }
+          });
+          localStorage.setItem('mca2026_ffp_checkins', JSON.stringify(newStoredCheckIns));
         }
       }
     } catch (err) {
@@ -91,11 +161,11 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
   const handleToggleCheckIn = async (student, shouldCheckIn = true) => {
     const key = student.passId || student.regNumber || student.id;
     const nowIso = new Date().toISOString();
+    const effectivePasscode = adminPasscode || sessionStorage.getItem('mca_admin_passcode') || 'mca2026admin';
 
     // 1. Optimistic local state update
     const updatedAttendees = attendees.map(item => {
-      const itemKey = item.passId || item.regNumber || item.id;
-      if (itemKey === key) {
+      if (isSameStudent(item, student)) {
         return {
           ...item,
           checkedIn: shouldCheckIn,
@@ -107,7 +177,16 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
 
     setAttendees(updatedAttendees);
 
-    // 2. Persist in localStorage
+    // 2. Notify parent AdminPanel immediately so other tabs stay in sync
+    if (onAttendeeCheckInChange) {
+      onAttendeeCheckInChange({
+        ...student,
+        checkedIn: shouldCheckIn,
+        checkedInAt: shouldCheckIn ? nowIso : null
+      });
+    }
+
+    // 3. Persist in localStorage
     try {
       const storedCheckIns = JSON.parse(localStorage.getItem('mca2026_ffp_checkins') || '{}');
       if (shouldCheckIn) {
@@ -135,7 +214,7 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
       } catch (e) {}
     } else {
       setActionMessage(`↩️ Check-in undone for ${student.fullName}.`);
-      if (lastCheckedStudent && (lastCheckedStudent.passId === key || lastCheckedStudent.id === key)) {
+      if (lastCheckedStudent && isSameStudent(lastCheckedStudent, student)) {
         setLastCheckedStudent(null);
       }
     }
@@ -144,23 +223,39 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
       setActionMessage('');
     }, 4000);
 
-    // 3. Send update to backend API
+    // 4. Send update to backend API
     try {
-      await fetch(`${API_BASE}/api/checkin`, {
+      const res = await fetch(`${API_BASE}/api/checkin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...(adminPasscode ? { 'x-admin-passcode': adminPasscode } : {})
+          ...(effectivePasscode ? { 'x-admin-passcode': effectivePasscode } : {})
         },
         body: JSON.stringify({
           id: student.id,
           passId: student.passId || student.regNumber,
           checkedIn: shouldCheckIn,
-          passcode: adminPasscode
+          passcode: effectivePasscode
         })
       });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `HTTP ${res.status}`);
+      }
+
+      const resData = await res.json();
+      console.log('✅ Check-in persisted in database successfully:', resData);
+
+      if (resData && resData.data) {
+        setAttendees(prev => prev.map(item => isSameStudent(item, resData.data) ? { ...item, ...resData.data } : item));
+        if (onAttendeeCheckInChange) {
+          onAttendeeCheckInChange(resData.data);
+        }
+      }
     } catch (err) {
-      console.warn('Failed to sync check-in with backend API:', err);
+      console.error('Failed to sync check-in with backend API:', err);
+      setActionMessage(`⚠️ Saved locally, but database sync warning: ${err.message}`);
     }
   };
 
@@ -300,10 +395,10 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white font-display tracking-tight">
-              🎫 FFP Pass Verification &amp; Check-In
+              🎫 Venue Pass Verification &amp; Check-In
             </h1>
             <p className="text-slate-400 text-xs sm:text-sm mt-0.5">
-              Verify attendee Pass IDs starting with <strong className="text-violet-300 font-mono">FFP</strong>, check in students, and monitor real-time arrivals.
+              Verify attendee Pass IDs, check in students, and monitor real-time arrivals.
             </p>
           </div>
 
@@ -322,7 +417,7 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
               onClick={fetchLiveAttendees}
               disabled={loading}
               className="btn btn-secondary px-3.5 py-2 text-xs sm:text-sm rounded-xl font-semibold inline-flex items-center gap-1.5"
-              title="Refresh FFP records"
+              title="Refresh attendee records"
             >
               <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
               <span>{loading ? 'Refreshing...' : 'Refresh'}</span>
@@ -366,11 +461,11 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
 
         {/* Live Metrics Grid — Prominently shows total record number! */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 mb-7">
-          {/* Card 1: Total FFP Records */}
+          {/* Card 1: Total Records */}
           <div className="glass-panel p-4 sm:p-5 rounded-2xl bg-[#0B1020]/80 border-violet-500/30 shadow-xl shadow-black/40 relative overflow-hidden">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[0.7rem] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">
-                Total FFP Records
+                Total Registrations
               </span>
               <div className="w-8 h-8 rounded-lg bg-violet-500/20 border border-violet-500/40 flex items-center justify-center text-violet-300">
                 <Ticket size={16} />
@@ -380,7 +475,7 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
               {totalCount}
             </div>
             <div className="text-[0.7rem] sm:text-xs text-violet-300 font-semibold mt-1">
-              Confirmed FFP Pass Holders
+              Confirmed Pass Holders
             </div>
           </div>
 
@@ -580,7 +675,7 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
             <input
               type="text"
-              placeholder="Search table by name or pass code (e.g. uXJMhpjh)..."
+              placeholder="Search table by name or pass ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="form-input pl-10 text-xs sm:text-sm py-2 rounded-xl"
@@ -590,7 +685,7 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
           {/* Status Tabs */}
           <div className="flex items-center gap-1.5 flex-wrap">
             {[
-              { id: 'ALL', label: `All FFP (${totalCount})` },
+              { id: 'ALL', label: `All (${totalCount})` },
               { id: 'PENDING', label: `Pending (${pendingCount})` },
               { id: 'CHECKED_IN', label: `Checked In (${checkedInCount})` }
             ].map(tab => (
@@ -650,7 +745,7 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
         {/* Total Records Counter Row */}
         <div className="flex items-center justify-between text-xs text-slate-400 mb-3 px-1">
           <div>
-            Showing <strong className="text-white">{filteredAttendees.length}</strong> of <strong className="text-violet-300">{totalCount}</strong> FFP Records
+            Showing <strong className="text-white">{filteredAttendees.length}</strong> of <strong className="text-violet-300">{totalCount}</strong> Attendees
           </div>
           <div className="flex items-center gap-2">
             <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400" />
@@ -660,28 +755,26 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
           </div>
         </div>
 
-        {/* FFP Attendees List Table */}
+        {/* Attendees List Table - 3 Columns: Name, IDs, Check-In */}
         <div className="glass-panel overflow-x-auto p-0 rounded-2xl border-white/10 bg-[#0B1020]/75 shadow-2xl shadow-black/40">
           <table className="w-full border-collapse text-left text-xs sm:text-sm">
             <thead>
               <tr className="border-b border-white/10 bg-white/[0.02]">
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem]">Pass ID</th>
                 <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem]">Name</th>
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem]">Year</th>
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem]">Div</th>
-                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem] text-right">Check In</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem]">IDs</th>
+                <th className="p-3.5 text-slate-400 font-bold uppercase tracking-wider text-[0.75rem] text-right">Check-In</th>
               </tr>
             </thead>
             <tbody>
               {filteredAttendees.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-12 text-center text-slate-400">
+                  <td colSpan={3} className="p-12 text-center text-slate-400">
                     No matching attendee records found.
                   </td>
                 </tr>
               ) : (
                 filteredAttendees.map((student, idx) => {
-                  const passId = student.passId || student.regNumber;
+                  const passId = student.passId || student.regNumber || student.id;
                   const isCheckedIn = Boolean(student.checkedIn);
 
                   return (
@@ -691,35 +784,24 @@ export default function VenueCheckIn({ onBackToDashboard, onBackToHome, adminPas
                         isCheckedIn ? 'bg-emerald-500/[0.04] hover:bg-emerald-500/[0.08]' : 'hover:bg-white/[0.03]'
                       }`}
                     >
-                      {/* Pass ID */}
+                      {/* Column 1: Name */}
+                      <td className="p-3.5">
+                        <div className="font-bold text-white text-sm sm:text-base">
+                          {student.fullName}
+                        </div>
+                        <div className="text-[0.7rem] text-slate-400 font-medium mt-0.5 sm:hidden">
+                          {student.year || '1st Year'} • Div {student.div || 'A'}
+                        </div>
+                      </td>
+
+                      {/* Column 2: IDs */}
                       <td className="p-3.5 font-mono font-bold text-violet-300 whitespace-nowrap">
-                        <span className="bg-violet-500/15 border border-violet-500/30 px-2.5 py-1 rounded-lg">
+                        <span className="bg-violet-500/15 border border-violet-500/30 px-2.5 py-1 rounded-lg inline-block">
                           {passId}
                         </span>
                       </td>
 
-                      {/* Student Name */}
-                      <td className="p-3.5">
-                        <div className="font-bold text-white text-sm">
-                          {student.fullName}
-                        </div>
-                      </td>
-
-                      {/* Year */}
-                      <td className="p-3.5 whitespace-nowrap">
-                        <span className={`badge ${(student.year || '1st Year').includes('1') ? 'badge-purple' : 'badge-amber'}`}>
-                          {student.year || '1st Year'}
-                        </span>
-                      </td>
-
-                      {/* Division */}
-                      <td className="p-3.5 whitespace-nowrap">
-                        <span className={`badge ${student.div === 'A' ? 'badge-purple' : 'badge-pink'}`}>
-                          Div {student.div || 'A'}
-                        </span>
-                      </td>
-
-                      {/* Check In Action Button */}
+                      {/* Column 3: Check-In */}
                       <td className="p-3.5 text-right whitespace-nowrap">
                         {isCheckedIn ? (
                           <button

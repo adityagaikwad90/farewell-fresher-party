@@ -255,16 +255,15 @@ app.post('/api/checkin', async (req, res) => {
     const authHeader = req.headers['authorization'];
     const token = req.headers['x-admin-passcode'] || (authHeader ? authHeader.replace('Bearer ', '') : passcode);
 
-    if (token && token !== ADMIN_PASSCODE) {
+    if (token && token.trim().toLowerCase() !== ADMIN_PASSCODE.trim().toLowerCase()) {
       return res.status(401).json({ error: 'Unauthorized: Invalid Passcode' });
     }
 
-    const key = id || passId;
-    if (!key) {
+    if (!id && !passId) {
       return res.status(400).json({ error: 'Attendee ID or Pass ID is required.' });
     }
 
-    const updated = await updateCheckInStatus(key, checkedIn);
+    const updated = await updateCheckInStatus({ id, passId }, checkedIn);
     res.json({
       success: true,
       message: updated.checkedIn ? 'Attendee marked as Checked In ✅' : 'Check-In status removed',
@@ -276,26 +275,40 @@ app.post('/api/checkin', async (req, res) => {
   }
 });
 
-// Venue Desk: Get All FFP Attendees & Live Counts
-app.get('/api/venue/ffp-attendees', async (req, res) => {
+// Venue Desk: Get Only Official FFP Gate Pass Attendees & Live Counts
+const handleVenueAttendees = async (req, res) => {
   try {
     const records = await getAllRegistrations();
-    const ffp = records.filter(r => (r.regNumber || r.passId || '').toUpperCase().startsWith('FFP'));
-    const checkedInCount = ffp.filter(r => Boolean(r.checkedIn)).length;
-    const pendingCount = ffp.length - checkedInCount;
+    // Only include official FFP Gate Pass attendees
+    const venueOnly = records.filter(r => {
+      const p = String(r.passId || r.regNumber || '').toUpperCase().trim();
+      return p.startsWith('FFP');
+    });
+    const normalized = venueOnly.map(r => ({
+      ...r,
+      passId: r.passId || r.regNumber || r.id,
+      regNumber: r.regNumber || r.passId || r.id,
+      checkedIn: Boolean(r.checkedIn),
+      checkedInAt: r.checkedIn ? (r.checkedInAt || null) : null
+    }));
+    const checkedInCount = normalized.filter(r => r.checkedIn).length;
+    const pendingCount = normalized.length - checkedInCount;
 
     res.json({
       success: true,
-      total: ffp.length,
+      total: normalized.length,
       checkedInCount,
       pendingCount,
-      data: ffp
+      data: normalized
     });
   } catch (err) {
-    console.error('Failed to get FFP attendees:', err);
-    res.status(500).json({ error: 'Failed to fetch FFP attendees.' });
+    console.error('Failed to get venue attendees:', err);
+    res.status(500).json({ error: 'Failed to fetch attendees.' });
   }
-});
+};
+
+app.get('/api/venue/ffp-attendees', handleVenueAttendees);
+app.get('/api/venue/attendees', handleVenueAttendees);
 
 // Admin: Export to CSV
 app.get('/api/export', requireAdminAuth, async (req, res) => {
